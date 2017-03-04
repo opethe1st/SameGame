@@ -1,10 +1,12 @@
 import random
-NOCOLOUR,NRED,NBLUE,NGREEN  = 0,1,2,3
+NOCOLOUR,NRED,NBLUE,NGREEN,NCYAN  = 0,1,2,3,4
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
 GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
+CYAN =( 0,  255, 255)
+
 
 def numToColour(num):
     if num==NRED:
@@ -13,11 +15,20 @@ def numToColour(num):
         return BLUE
     elif num==NGREEN:
         return GREEN
+    elif num==NCYAN:
+        return CYAN
     else:
         return (255, 255, 255)
 class Ball:
     def __init__(self,colour = (255, 255, 255)):
         self.colour = numToColour(colour)
+    def clear(self):
+        self.colour = numToColour(NOCOLOUR)
+
+class Square:
+    def __init__(self,colour,position):
+        self.colour = colour
+        self.position = position
     def clear(self):
         self.colour = numToColour(NOCOLOUR)
 
@@ -29,7 +40,7 @@ class Board:
     def initBoard(self):
         for i in range(self.size):
             for j in range(self.size):
-                self.balls[i][j].colour = numToColour(random.randint(1,3))
+                self.balls[i][j].colour = numToColour(random.randint(1,4))
 
         #[[ self.balls[i][j].colour = numToColour(random.randint(1,4)) for i in xrange(size)] for j in xrange(size)]
 
@@ -62,6 +73,21 @@ class Board:
             #print stack 
         return listofballs
         
+    def joiningSquares(self,side):
+        
+        squareballs = set()
+        for x in range(self.size):
+            for y in range(self.size):
+                for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
+                    if 0<=x+m<self.size and 0<=y+n<self.size and self.balls[x][y].colour==self.balls[x+m][y+n].colour \
+                    and self.balls[x][y].colour!=WHITE:
+                        square = Square(self.balls[x][y].colour, (x+m/2,y+n/2))
+                        #print "s",square.colour
+                        squareballs.add(square)
+                        #print square.position
+        #print len(squareballs)
+        return squareballs
+
 
 
     def markBalls(self,position):
@@ -71,8 +97,6 @@ class Board:
         pass
     
     def clearBalls(self):
-
-
         "gravity is to the left. Currently inefficent"
         for i in xrange(self.size):
             for j in xrange(self.size):
