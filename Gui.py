@@ -36,7 +36,7 @@ def getCircle(board,radius):
         for y in range(board.size):
             x2,y2 = RADIUS+x*DIAMETER,RADIUS+y*DIAMETER
             distance = math.hypot(x1 - x2, y1 - y2)
-            if distance <= radius:
+            if distance <= radius and board.balls[int((x2-RADIUS)/DIAMETER)][int((y2-RADIUS)/DIAMETER)].colour!=WHITE:
                 return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
     return None
 
@@ -55,9 +55,10 @@ if __name__ == "__main__":
                 if position:
                     board.markBalls(position)
                     board.clearBalls()
-                    display(board))
+                    display(board)
                     pygame.display.update()
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+    print( "GAME OVER")
 

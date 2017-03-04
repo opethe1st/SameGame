@@ -36,6 +36,7 @@ class Board:
     def __init__(self, size=4):
         self.size = size
         self.balls = [[Ball() for i in range(self.size)] for j in range(self.size)]
+        self.nballsleft = size*size 
     
     def initBoard(self):
         for i in range(self.size):
@@ -91,9 +92,12 @@ class Board:
 
 
     def markBalls(self,position):
+        #self.nballsleft-=len(self.findAdjacentBalls(position))
+        #print self.nballsleft
         for ballposition in self.findAdjacentBalls(position):
             x,y = ballposition
             self.balls[x][y].clear()
+            self.nballsleft-=1
         pass
     
     def clearBalls(self):
@@ -107,4 +111,8 @@ class Board:
                     self.balls[i][0]= Ball()
 
     def isGameOver(self):
-        pass
+        print (self.nballsleft)
+        if self.nballsleft==0:
+            return True
+        else:
+            return False
