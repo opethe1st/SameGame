@@ -31,19 +31,14 @@ def display(board):
         for y in range(board.size):
             drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
 
-def getClickedCircle(board,radius):
+def getCircle(board,radius):
     x1,y1 = pygame.mouse.get_pos()
-    for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x1,y1 = pygame.mouse.get_pos()
-                for x in range(board.size):
-                    for y in range(board.size):
-                        x2,y2 = RADIUS+x*DIAMETER,RADIUS+y*DIAMETER
-                        distance = math.hypot(x1 - x2, y1 - y2)
-                        if distance <= radius:
-                            return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
-    
-    
+    for x in range(board.size):
+        for y in range(board.size):
+            x2,y2 = RADIUS+x*DIAMETER,RADIUS+y*DIAMETER
+            distance = math.hypot(x1 - x2, y1 - y2)
+            if distance <= radius:
+                return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
     return None
 
 if __name__ == "__main__":
@@ -53,17 +48,19 @@ if __name__ == "__main__":
     #print info
     board = Board(size=20)
     board.initBoard()
+    display(board)
+    #drawJoiningSquare(board,RADIUS)
+    pygame.display.update()
     while not board.isGameOver():
-        display(board)
-        #drawJoiningSquare(board,RADIUS)
-        pygame.display.update()
-        position = getClickedCircle(board,radius=RADIUS)
-        if position: #board position or 
-            board.markBalls(position)
-            board.clearBalls()
-
         for event in pygame.event.get():
-            #print event.type
+            if event.type==pygame.MOUSEBUTTONDOWN:
+                position = getCircle(board,radius=RADIUS)
+                if position:
+                    board.markBalls(position)
+                    board.clearBalls()
+                    display(board)
+                    #drawJoiningSquare(board,RADIUS)
+                    pygame.display.update()
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
