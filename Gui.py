@@ -21,7 +21,7 @@ def drawJoiningSquare(board,side):
     squares = board.joiningSquares(side)
     for square in squares:
         x,y = square.position
-        pygame.draw.rect(screen, square.colour, (x*DIAMETER,y*DIAMETER,DIAMETER,DIAMETER), 0)
+        pygame.draw.rect(screen, square.colour, (x*DIAMETER+2,y*DIAMETER+2,DIAMETER-3,DIAMETER-3), 0)
     #drawJoiningSquare(board,RADIUS)
 
 
@@ -30,6 +30,7 @@ def display(board):
     for x in range(board.width):
         for y in range(board.height):
             drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
+    drawJoiningSquare(board,RADIUS)
     displayscore(board)
 
 def getCircle(board,radius):

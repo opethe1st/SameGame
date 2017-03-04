@@ -85,7 +85,7 @@ class Board:
                 for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
                     if 0<=x+m<self.width and 0<=y+n<self.height and self.balls[x][y].colour==self.balls[x+m][y+n].colour \
                     and self.balls[x][y].colour!=WHITE:
-                        square = Square(self.balls[x][y].colour, (x+m/2,y+n/2))
+                        square = Square(self.balls[x][y].colour, (x+m/2.0,y+n/2.0))
                         #print "s",square.colour
                         squareballs.add(square)
                         #print square.position
