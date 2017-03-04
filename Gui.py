@@ -11,19 +11,17 @@ RADIUS = DIAMETER/2
 def drawSquare(size):
     pygame.draw.rect(screen, WHITE, (0,0,size*DIAMETER,size*DIAMETER), 0)
     pygame.display.update()
-    pass #Some pygame functions
 
 def drawCircle(radius,position,colour):
     x,y = position
     pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS, colour )
-    pass #Some pygame functions
 
 def drawJoiningSquare(board,side):
     squares = board.joiningSquares(side)
     for square in squares:
         x,y = square.position
-        #print square.colour
         pygame.draw.rect(screen, square.colour, (x*DIAMETER,y*DIAMETER,DIAMETER,DIAMETER), 0)
+    #drawJoiningSquare(board,RADIUS)
 
 
 def display(board):
@@ -46,12 +44,9 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((640,640))
     pygame.display.set_caption('Same!')
-    #info = pygame.display.Info()
-    #print info
     board = Board(size=20)
     board.initBoard()
     display(board)
-    #drawJoiningSquare(board,RADIUS)
     pygame.display.update()
     while not board.isGameOver():
         for event in pygame.event.get():
@@ -60,8 +55,7 @@ if __name__ == "__main__":
                 if position:
                     board.markBalls(position)
                     board.clearBalls()
-                    display(board)
-                    #drawJoiningSquare(board,RADIUS)
+                    display(board))
                     pygame.display.update()
             if event.type == pygame.QUIT:
                 pygame.quit()
