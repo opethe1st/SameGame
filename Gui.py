@@ -14,7 +14,8 @@ def drawSquare(size):
 
 def drawCircle(radius,position,colour):
     x,y = position
-    pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS, colour )
+    pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS-1, colour )
+    pygame.gfxdraw.aacircle(screen, x, y , radius*RADIUS-1, colour )
 
 def drawJoiningSquare(board,side):
     squares = board.joiningSquares(side)
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     board.initBoard()
     display(board)
     pygame.display.update()
-    while not board.isGameOver():
+    while True:
         for event in pygame.event.get():
             if event.type==pygame.MOUSEBUTTONDOWN:
                 position = getCircle(board,radius=RADIUS)
@@ -60,5 +61,11 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-    print( "GAME OVER")
+        if board.isGameOver():
+            pygame.display.set_caption('Results!')
+            pygame.font.init()
+            myfont = pygame.font.SysFont('Times New Roman', 30)
+            textsurface = myfont.render('Score: %s Moves: %s'%(board.score,board.nmoves), True, (0, 0, 200))
+            screen.blit(textsurface,(0,0))
+            pygame.display.update()
 
