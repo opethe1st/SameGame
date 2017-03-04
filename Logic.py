@@ -94,14 +94,16 @@ class Board:
 
 
     def markBalls(self,position):
-        self.score+=len(self.findAdjacentBalls(position))**2
+        connectedballs = self.findAdjacentBalls(position)
+        if len(connectedballs)==1:
+            return
+        self.score+=len(connectedballs)**2
         self.nmoves+=1
         #print self.nballsleft
-        for ballposition in self.findAdjacentBalls(position):
+        for ballposition in connectedballs:
             x,y = ballposition
             self.balls[x][y].clear()
             self.nballsleft-=1
-        pass
     
     def clearBalls(self):
         "gravity is to the left. Currently inefficent"
