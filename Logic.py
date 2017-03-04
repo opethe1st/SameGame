@@ -1,11 +1,11 @@
 import random
-NOCOLOUR,NRED,NBLUE,NGREEN,NCYAN  = 0,1,2,3,4
+NOCOLOUR,NRED,NBLUE,NGREEN,NDARKORCHID  = 0,1,2,3,4
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
+GREEN = (34,139,34)
 RED =   (255,   0,   0)
-CYAN =( 0,  255, 255)
+DARKORCHID =(153,50,204)
 
 
 def numToColour(num):
@@ -15,8 +15,8 @@ def numToColour(num):
         return BLUE
     elif num==NGREEN:
         return GREEN
-    elif num==NCYAN:
-        return CYAN
+    elif num==NDARKORCHID:
+        return DARKORCHID
     else:
         return (255, 255, 255)
 class Ball:

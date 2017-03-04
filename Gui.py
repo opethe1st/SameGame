@@ -14,8 +14,8 @@ def drawSquare(size):
 
 def drawCircle(radius,position,colour):
     x,y = position
-    pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS-1, colour )
-    pygame.gfxdraw.aacircle(screen, x, y , radius*RADIUS-1, colour )
+    pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS-2, colour )
+    pygame.gfxdraw.aacircle(screen, x, y , radius*RADIUS-2, colour )
 
 def drawJoiningSquare(board,side):
     squares = board.joiningSquares(side)
