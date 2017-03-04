@@ -3,6 +3,7 @@
 #I need to have a display board that draws the board on the screen.
 from Logic import Board,WHITE,BLACK,RED,BLUE,GREEN
 import pygame
+import pygame.gfxdraw
 import sys
 import math
 DIAMETER = 32
@@ -14,7 +15,7 @@ def drawSquare(size):
 
 def drawCircle(radius,position,colour):
     x,y = position
-    pygame.draw.circle(screen, colour, (x,y), radius*RADIUS, 0)
+    pygame.gfxdraw.filled_circle(screen, x, y , radius*RADIUS, colour )
     pass #Some pygame functions
 
 def drawJoiningSquare(board,side):
@@ -44,6 +45,7 @@ def getCircle(board,radius):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((640,640))
+    pygame.display.set_caption('Same!')
     #info = pygame.display.Info()
     #print info
     board = Board(size=20)
