@@ -30,6 +30,7 @@ def display(board):
     for x in range(board.width):
         for y in range(board.height):
             drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
+    displayscore(board)
 
 def getCircle(board,radius):
     x1,y1 = pygame.mouse.get_pos()
@@ -41,9 +42,18 @@ def getCircle(board,radius):
                 return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
     return None
 
+def displayscore(board):
+    pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
+    pygame.font.init()
+    myfont = pygame.font.SysFont('monospace', 30)
+    textsurface = myfont.render('Score: %s Moves: %s'%(board.score,board.nmoves), False, (0, 0, 0),(150,150,150)).convert()
+    screen.blit(textsurface,(0,512))
+    pygame.display.update()
+
+
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((640,640))
+    screen = pygame.display.set_mode((640,560))
     pygame.display.set_caption('Same!')
     board = Board(width=20,height=16)
     board.initBoard()
