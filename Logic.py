@@ -33,16 +33,17 @@ class Square:
         self.colour = numToColour(NOCOLOUR)
 
 class Board:
-    def __init__(self, size=4):
-        self.size = size
-        self.balls = [[Ball() for i in range(self.size)] for j in range(self.size)]
-        self.nballsleft = size*size
+    def __init__(self, width=4,height=4):
+        self.width = width
+        self.height = height
+        self.balls = [[Ball() for i in range(self.height)] for j in range(self.width)]
+        self.nballsleft = width*height
         self.nmoves = 0
         self.score = 0 
     
     def initBoard(self):
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.width):
+            for j in range(self.height):
                 self.balls[i][j].colour = numToColour(random.randint(1,4))
 
         #[[ self.balls[i][j].colour = numToColour(random.randint(1,4)) for i in xrange(size)] for j in xrange(size)]
@@ -54,13 +55,13 @@ class Board:
             x,y = position
             listposition=[]
             for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
-                    if 0<=x+m<self.size and 0<=y+n<self.size and self.balls[x][y].colour==self.balls[x+m][y+n].colour:
+                    if 0<=x+m<self.width and 0<=y+n<self.height and self.balls[x][y].colour==self.balls[x+m][y+n].colour:
                         listposition.append((x+m,y+n))
             return listposition
 
         x,y = ballposition
         stack = [ballposition]
-        visited = [[False for i in xrange(self.size)] for j in xrange(self.size) ]
+        visited = [[False for i in xrange(self.height)] for j in xrange(self.width) ]
         #print x,y
         visited[x][y] = True
         listofballs = [ballposition]
@@ -79,10 +80,10 @@ class Board:
     def joiningSquares(self,side):
         
         squareballs = set()
-        for x in range(self.size):
-            for y in range(self.size):
+        for x in range(self.width):
+            for y in range(self.height):
                 for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
-                    if 0<=x+m<self.size and 0<=y+n<self.size and self.balls[x][y].colour==self.balls[x+m][y+n].colour \
+                    if 0<=x+m<self.width and 0<=y+n<self.height and self.balls[x][y].colour==self.balls[x+m][y+n].colour \
                     and self.balls[x][y].colour!=WHITE:
                         square = Square(self.balls[x][y].colour, (x+m/2,y+n/2))
                         #print "s",square.colour
@@ -107,8 +108,8 @@ class Board:
     
     def clearBalls(self):
         "gravity is to the left. Currently inefficent"
-        for i in xrange(self.size):
-            for j in xrange(self.size):
+        for i in xrange(self.width):
+            for j in xrange(self.height):
                 if self.balls[i][j].colour==(255, 255, 255):
                     for k in reversed(xrange(j)): #,self.size-1
                         self.balls[i][k+1] = self.balls[i][k]
