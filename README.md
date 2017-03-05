@@ -1,3 +1,3 @@
 Side Project inspired by the Same game that comes with DrRacket.
 Uses pygame.
-You can download the .exe here https://drive.google.com/drive/folders/0B9rlqLejI2LjSThxM0E0N0h0akk
+You can download the .exe here https://github.com/opethe1st/SameGame/releases/download/v1.0/Gui.exe
