@@ -117,7 +117,16 @@ class Board:
                     self.balls[i][0]= Ball()
 
     def isGameOver(self):
-        if self.nballsleft==0:
-            return True
-        else:
-            return False
+        def adjacent(position):
+            "returns the list of balls of the same colour adjacent to the ball at position- position"
+            x,y = position
+            listposition=[]
+            for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
+                    if 0<=x+m<self.width and 0<=y+n<self.height and self.balls[x][y].colour==self.balls[x+m][y+n].colour:
+                        listposition.append((x+m,y+n))
+            return listposition
+        for x in xrange(self.width):
+            for y in xrange(self.height):
+                if len(adjacent((x,y)))>0 and self.balls[x][y].colour!=WHITE:
+                    return False
+        return True

@@ -76,7 +76,7 @@ if __name__ == "__main__":
             pygame.display.set_caption('Results!')
             pygame.font.init()
             myfont = pygame.font.SysFont('Times New Roman', 30)
-            textsurface = myfont.render('Score: %s Moves: %s'%(board.score,board.nmoves), True, (0, 0, 200))
-            screen.blit(textsurface,(0,0))
+            textsurface = myfont.render(' GAME OVER Score: %s Moves: %s'%(board.score,board.nmoves), True, (0, 0, 0))
+            screen.blit(textsurface,(150,50))
             pygame.display.update()
 
