@@ -1,6 +1,6 @@
 To implement
 
-    - shift all the balls when there is empty space on the last line
+    - shift all the balls when there is empty space on the last line- DONE
     - add Brown as one of the colours for the balls
     - fix GameOver code - just check if a ball has an adjacent ball - DONE
     - permanent storage for scoring with Sqlite3
