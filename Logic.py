@@ -110,11 +110,25 @@ class Board:
         "gravity is to the left. Currently inefficent"
         for i in xrange(self.width):
             for j in xrange(self.height):
-                if self.balls[i][j].colour==(255, 255, 255):
+                if self.balls[i][j].colour==WHITE:
                     for k in reversed(xrange(j)): #,self.size-1
                         self.balls[i][k+1] = self.balls[i][k]
-                        k+=1
+                        #k+=1
                     self.balls[i][0]= Ball()
+        for i in reversed(xrange(self.width)): #through columns
+            if self.balls[i][-1].colour==WHITE:
+                #print True
+                for j in xrange(self.height): #through rows
+                    for k in (xrange(i,self.width-1)): #,self.size-1
+                        self.balls[k][j] = self.balls[k+1][j]
+                    
+                    #for k in reversed(xrange(j)): #,self.size-1
+                    self.balls[-1][j]= Ball()
+                        #k+=1
+                    #self.balls[i][0]= Ball()
+
+
+
 
     def isGameOver(self):
         def adjacent(position):
