@@ -46,15 +46,19 @@ def getCircle(board,radius):
 def displayscore(board):
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
-    myfont = pygame.font.SysFont('monospace', 30)
-    textsurface = myfont.render('Score: %s Moves: %s'%(board.score,board.nmoves), False, (0, 0, 0),(150,150,150)).convert()
+    myfont = pygame.font.Font("Fonts/pokemon/Pokemon Solid.ttf", 30)
+    textsurface = myfont.render(' Score: %s Moves: %s'%(board.score,board.nmoves), False, (0, 0, 0),(150,150,150)).convert()
     screen.blit(textsurface,(0,512))
     pygame.display.update()
 
 
 if __name__ == "__main__":
+    WIDTH = 20
+    HEIGHT =16
+    SCREEN_WIDTH = DIAMETER*WIDTH
+    SCREEN_HEIGHT = DIAMETER*HEIGHT + 48
     pygame.init()
-    screen = pygame.display.set_mode((640,560))
+    screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     pygame.display.set_caption('Same!')
     board = Board(width=20,height=16)
     board.initBoard()
@@ -75,8 +79,9 @@ if __name__ == "__main__":
         if board.isGameOver():
             pygame.display.set_caption('Results!')
             pygame.font.init()
-            myfont = pygame.font.SysFont('Times New Roman', 30)
-            textsurface = myfont.render(' GAME OVER Score: %s Moves: %s'%(board.score,board.nmoves), True, (0, 0, 0))
-            screen.blit(textsurface,(150,50))
+            myfont = pygame.font.Font("Fonts/pokemon/Pokemon Solid.ttf", 30)
+            textsurface = myfont.render('GAME OVER !!', True, BLACK)
+            text_rect = textsurface.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT-32)/2))
+            screen.blit(textsurface,text_rect)
             pygame.display.update()
 
