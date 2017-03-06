@@ -1,0 +1,35 @@
+By installing or using this font you agree to the Product Usage Agreement:
+http://www.mansgreback.com/pua
+
+-----------------------
+
+This font is for PERSONAL USE ONLY and requires a license for commercial use. 
+The font license can be purchased at: 
+http://www.mansgreback.com/fonts/ristella
+
+Please read "What license do I need?" for more info:
+http://www.mansgreback.com/license
+
+-----------------------
+
+Ristella - a logotype script font. 
+This high-quality typeface is created by Måns Grebäck. 
+Its style is bold and has large, attention-grabbing uppercase letters. 
+Ristella contains alternate and stylistic alternates, as well as multiple ligatures.
+With its hundreds of glyphs it also has support for a wide range of languages. 
+
+How do you make a swash?
+Combine an ending and a tail to make a swash. 
+Endings are found in the following symbols: [ ] { }
+Tails are found in the following symbols:  < > § _ ¤ 
+Example: Ristella}>
+
+With ligatures activated, write multiple tail symbols to make a longer swash. 
+Example: Tailextender]¤¤¤
+
+-----------------------
+
+For further information, please read the FAQ:
+http://www.mansgreback.com/faq
+
+
