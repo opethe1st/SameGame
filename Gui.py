@@ -8,6 +8,7 @@ import sys
 import math
 DIAMETER = 32
 RADIUS = DIAMETER/2
+currentScore = 0
 def drawSquare(width,height):
     pygame.draw.rect(screen, WHITE, (0,0,width*DIAMETER,height*DIAMETER), 0)
     pygame.display.update()
@@ -44,10 +45,11 @@ def getCircle(board,radius):
     return None
 
 def displayscore(board):
+    global currentScore
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
     myfont = pygame.font.Font("/Users/ope/Documents/code/Projects/SameGame/Fonts/angrybirds-regular.ttf", 30)
-    textsurface = myfont.render(' Score: %s Moves: %s Top Score: %s'%(board.score,board.nmoves,board.highScore), 1, BLACK,(150,150,150)).convert()
+    textsurface = myfont.render(' Score: %s Moves: %s Current move: %s '%(board.score,board.nmoves,currentScore), 1, BLACK,(150,150,150)).convert()
     screen.blit(textsurface,(1,515))
     pygame.display.update()
 
@@ -65,6 +67,12 @@ if __name__ == "__main__":
     display(board)
     pygame.display.update()
     while True:
+        position = getCircle(board,radius=RADIUS)
+        if position:
+            currentScore = len(board.findAdjacentBalls(position))**2
+            displayscore(board)
+            pygame.display.update()
+        
         for event in pygame.event.get():
             if event.type==pygame.MOUSEBUTTONDOWN:
                 position = getCircle(board,radius=RADIUS)
