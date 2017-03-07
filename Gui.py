@@ -9,6 +9,7 @@ import math
 DIAMETER = 32
 RADIUS = DIAMETER/2
 currentScore = 0
+GameOver = False
 def drawSquare(width,height):
     pygame.draw.rect(screen, WHITE, (0,0,width*DIAMETER,height*DIAMETER), 0)
     pygame.display.update()
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     pygame.display.update()
     while True:
         position = getCircle(board,radius=RADIUS)
-        if position:
+        if position and not GameOver:
             currentScore = len(board.findAdjacentBalls(position))**2
             displayscore(board)
             pygame.display.update()
@@ -85,6 +86,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
         if board.isGameOver():
+            GameOver = True
             pygame.display.set_caption('Results!')
             pygame.font.init()
             myfont = pygame.font.Font("/Users/ope/Documents/code/Projects/SameGame/Fonts/angrybirds-regular.ttf", 50)
