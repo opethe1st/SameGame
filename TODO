@@ -1,9 +1,9 @@
 To implement
 
     - shift all the balls when there is empty space on the last line- DONE
-    - add Brown as one of the colours for the balls
+    - add Brown as one of the colours for the balls                 - DONE
     - fix GameOver code - just check if a ball has an adjacent ball - DONE
-    - permanent storage for scoring with Sqlite3
+    - permanent storage for scoring                                 - DONE
     - add Sound when you click
     - show score when you hover over the ball
     - optimizations, clean up the code
