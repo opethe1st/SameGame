@@ -42,7 +42,13 @@ class Board:
         self.balls = [[Ball() for i in range(self.height)] for j in range(self.width)]
         self.nballsleft = width*height
         self.nmoves = 0
-        self.score = 0 
+        self.score = 0
+        f = open('TopScores.txt','r')
+        score = f.readline()
+        if len(score)>0:    
+            self.highScore = int(score)
+        else:
+            self.highScore = 0 
     
     def initBoard(self):
         for i in range(self.width):
@@ -89,10 +95,8 @@ class Board:
                     if 0<=x+m<self.width and 0<=y+n<self.height and self.balls[x][y].colour==self.balls[x+m][y+n].colour \
                     and self.balls[x][y].colour!=WHITE:
                         square = Square(self.balls[x][y].colour, (x+m/2.0,y+n/2.0))
-                        #print "s",square.colour
                         squareballs.add(square)
-                        #print square.position
-        #print len(squareballs)
+                        
         return squareballs
 
 
@@ -120,15 +124,12 @@ class Board:
                     self.balls[i][0]= Ball()
         for i in reversed(xrange(self.width)): #through columns
             if self.balls[i][-1].colour==WHITE:
-                #print True
                 for j in xrange(self.height): #through rows
                     for k in (xrange(i,self.width-1)): #,self.size-1
                         self.balls[k][j] = self.balls[k+1][j]
-                    
-                    #for k in reversed(xrange(j)): #,self.size-1
                     self.balls[-1][j]= Ball()
-                        #k+=1
-                    #self.balls[i][0]= Ball()
+        if self.score>self.highScore:
+            self.highScore = self.score
 
 
 
@@ -146,4 +147,8 @@ class Board:
             for y in xrange(self.height):
                 if len(adjacent((x,y)))>0 and self.balls[x][y].colour!=WHITE:
                     return False
+        if self.score>=self.highScore:
+            self.highScore = self.score
+            f = open('TopScores.txt','w')
+            score = f.write(str(self.score))
         return True
