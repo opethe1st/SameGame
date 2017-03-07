@@ -91,5 +91,11 @@ if __name__ == "__main__":
             textsurface = myfont.render('GAME OVER !!', 1, BLACK)
             text_rect = textsurface.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT-48)/2))
             screen.blit(textsurface,text_rect)
+            pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
+            pygame.font.init()
+            myfont = pygame.font.Font("/Users/ope/Documents/code/Projects/SameGame/Fonts/angrybirds-regular.ttf", 30)
+            textsurface = myfont.render('Your Score: %s Top Score: %s '%(board.score,board.highScore), 1, BLACK,(150,150,150)).convert()
+            screen.blit(textsurface,(1,515))
+            pygame.display.update()
             pygame.display.update()
 
