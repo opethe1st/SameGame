@@ -47,7 +47,7 @@ def displayscore(board):
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
     myfont = pygame.font.Font("/Users/ope/Documents/code/Projects/SameGame/Fonts/angrybirds-regular.ttf", 30)
-    textsurface = myfont.render(' Score: %s Moves: %s'%(board.score,board.nmoves), 1, BLACK,(150,150,150)).convert()
+    textsurface = myfont.render(' Score: %s Moves: %s Top Score: %s'%(board.score,board.nmoves,board.highScore), 1, BLACK,(150,150,150)).convert()
     screen.blit(textsurface,(1,515))
     pygame.display.update()
 
