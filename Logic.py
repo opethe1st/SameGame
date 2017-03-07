@@ -1,11 +1,12 @@
 import random
-NOCOLOUR,NRED,NBLUE,NGREEN,NDARKORCHID  = 0,1,2,3,4
+NOCOLOUR,NRED,NBLUE,NGREEN,NDARKORCHID,NBROWN  = 0,1,2,3,4,5
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
 GREEN = (34,139,34)
 RED =   (255,   0,   0)
 DARKORCHID =(153,50,204)
+BROWN = (165,42,42)
 
 
 def numToColour(num):
@@ -17,6 +18,8 @@ def numToColour(num):
         return GREEN
     elif num==NDARKORCHID:
         return DARKORCHID
+    elif num==NBROWN:
+        return BROWN
     else:
         return (255, 255, 255)
 class Ball:
@@ -44,7 +47,7 @@ class Board:
     def initBoard(self):
         for i in range(self.width):
             for j in range(self.height):
-                self.balls[i][j].colour = numToColour(random.randint(1,4))
+                self.balls[i][j].colour = numToColour(random.randint(1,5))
 
         #[[ self.balls[i][j].colour = numToColour(random.randint(1,4)) for i in xrange(size)] for j in xrange(size)]
 
