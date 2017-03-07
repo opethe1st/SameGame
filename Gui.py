@@ -6,6 +6,15 @@ import pygame
 import pygame.gfxdraw
 import sys
 import math
+import os
+
+if getattr(sys, 'frozen', False):
+    # we are running in a bundle
+    basedir = sys._MEIPASS
+else:
+    # we are running in a normal Python environment
+    basedir = '.'
+
 DIAMETER = 32
 RADIUS = DIAMETER/2
 currentScore = 0
@@ -49,7 +58,7 @@ def displayscore(board):
     global currentScore
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
-    myfont = pygame.font.Font("Fonts/angrybirds-regular.ttf", 30)
+    myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 30)
     textsurface = myfont.render(' Score: %s Moves: %s Current move: %s '%(board.score,board.nmoves,currentScore), 1, BLACK,(150,150,150)).convert()
     screen.blit(textsurface,(1,515))
     pygame.display.update()
@@ -87,15 +96,14 @@ if __name__ == "__main__":
                 sys.exit()
         if board.isGameOver():
             GameOver = True
-            pygame.display.set_caption('Results!')
             pygame.font.init()
-            myfont = pygame.font.Font("Fonts/angrybirds-regular.ttf", 50)
+            myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 50)
             textsurface = myfont.render('GAME OVER !!', 1, BLACK)
             text_rect = textsurface.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT-48)/2))
             screen.blit(textsurface,text_rect)
             pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
             pygame.font.init()
-            myfont = pygame.font.Font("Fonts/angrybirds-regular.ttf", 30)
+            myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 30)
             textsurface = myfont.render('Your Score: %s Top Score: %s '%(board.score,board.highScore), 1, BLACK,(150,150,150)).convert()
             screen.blit(textsurface,(1,515))
             pygame.display.update()
