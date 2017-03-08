@@ -1,4 +1,14 @@
 import random
+import os
+import sys
+
+if getattr(sys, 'frozen', False):
+    # we are running in a bundle
+    basedir = sys._MEIPASS
+else:
+    # we are running in a normal Python environment
+    basedir = '.'
+
 NOCOLOUR,NRED,NBLUE,NGREEN,NDARKORCHID,NBROWN  = 0,1,2,3,4,5
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -43,7 +53,7 @@ class Board:
         self.nballsleft = width*height
         self.nmoves = 0
         self.score = 0
-        f = open('TopScores.txt','r')
+        f = open(basedir + os.sep +'TopScores.txt','r')
         score = f.readline()
         if len(score)>0:    
             self.highScore = int(score)
@@ -149,6 +159,6 @@ class Board:
                     return False
         if self.score>=self.highScore:
             self.highScore = self.score
-            f = open('TopScores.txt','w')
+            f = open(basedir + os.sep +'TopScores.txt','w')
             score = f.write(str(self.score))
         return True
