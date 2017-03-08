@@ -58,8 +58,8 @@ def displayscore(board):
     global currentScore
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
-    myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 30)
-    textsurface = myfont.render(' Score: %s Moves: %s Current move: %s '%(board.score,board.nmoves,currentScore), 1, BLACK,(150,150,150)).convert()
+    myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 24)
+    textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s'%(board.score,board.nmoves,currentScore,board.highScore), 1, BLACK,(150,150,150)).convert()
     screen.blit(textsurface,(1,515))
     pygame.display.update()
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
             screen.blit(textsurface,text_rect)
             pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
             pygame.font.init()
-            myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 30)
+            myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 24)
             textsurface = myfont.render('Your Score: %s Top Score: %s '%(board.score,board.highScore), 1, BLACK,(150,150,150)).convert()
             screen.blit(textsurface,(1,515))
             pygame.display.update()
