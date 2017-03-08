@@ -28,7 +28,7 @@ exe = EXE(pyz,
           console=False )
 app = BUNDLE(exe,
          name='SameGame.app',
-         icon=None,
+         icon='same.ico',
          bundle_identifier=None,
          info_plist={
             'NSHighResolutionCapable': 'True'
