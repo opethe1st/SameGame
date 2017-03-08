@@ -4,10 +4,9 @@ To implement
     - add Brown as one of the colours for the balls                 - DONE
     - fix GameOver code - just check if a ball has an adjacent ball - DONE
     - permanent storage for scoring                                 - DONE
-    - add Sound when you click
     - show score when you hover over the ball                       - DONE
     - optimizations, clean up the code
-    - package as executable                                         - DONE for Windows
+    - package as executable                                         - DONE
     - Write a post about the process of developing this game
     - Try to get my post into the MagPi
     - Add Logo for the executable
