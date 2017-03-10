@@ -17,7 +17,6 @@ else:
 
 DIAMETER = 32
 RADIUS = DIAMETER/2
-currentScore = 0
 GameOver = False
 
 
@@ -45,7 +44,7 @@ def display(board):
             if board.balls[x][y]:
                 drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
     drawJoiningSquare(board,RADIUS)
-    displayscore(board)
+    displayscore(board,0)
 
 def getCircle(board,radius):
     x1,y1 = pygame.mouse.get_pos()
@@ -57,12 +56,11 @@ def getCircle(board,radius):
                 return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
     return None
 
-def displayscore(board):
-    global currentScore
+def displayscore(board,current):
     pygame.draw.rect(screen, (150,150,150), (0,512,640,48), 0)
     pygame.font.init()
     myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 24)
-    textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s'%(board.score,board.nmoves,currentScore,board.highScore), 1, BLACK,(150,150,150)).convert()
+    textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s'%(board.score,board.nmoves,current,board.highScore), 1, BLACK,(150,150,150)).convert()
     screen.blit(textsurface,(1,515))
     pygame.display.update()
 
@@ -82,8 +80,8 @@ if __name__ == "__main__":
     while True:
         position = getCircle(board,radius=RADIUS)
         if position and not GameOver:
-            currentScore = len(board.findAdjacentBalls(position))**2
-            displayscore(board)
+            currentScore = len(board.findAdjacentBalls(position))**2+100
+            displayscore(board,currentScore)
             pygame.display.update()
         
         for event in pygame.event.get():

@@ -22,15 +22,11 @@ BallColours = [RED,BLUE,GREEN,DARKORCHID,BROWN]
 class Ball:
     def __init__(self,colour = WHITE):
         self.colour = colour
-    def clear(self):
-        self.colour = WHITE
 
 class Square:
     def __init__(self,colour,position):
         self.colour = colour
         self.position = position
-    def clear(self):
-        self.colour = WHITE
 
 class Board:
     def __init__(self, width=20,height=16):
@@ -40,12 +36,8 @@ class Board:
         self.nballsleft = width*height
         self.nmoves = 0
         self.score = 0
-        f = open(basedir + os.sep +'TopScores.txt','r')
-        score = f.readline()
-        if len(score)>0:    
-            self.highScore = int(score)
-        else:
-            self.highScore = 0 
+        self.currentScore = 0
+        self.highScore = self.getHighScore()
     
     def initBoard(self):
         for i in range(self.width):
@@ -68,7 +60,7 @@ class Board:
         x,y = ballposition
         stack = [ballposition]
         visited = [[False for i in xrange(self.height)] for j in xrange(self.width) ]
-        #print x,y
+        
         visited[x][y] = True
         connectedballs = [ballposition]
         while stack:
@@ -80,7 +72,7 @@ class Board:
                     stack.append(position)
                     connectedballs.append(position)
                     visited[x1][y1] = True
-            #print stack 
+             
         return connectedballs
         
     def joiningSquares(self,side):
@@ -127,19 +119,26 @@ class Board:
         if self.score>self.highScore:
             self.highScore = self.score
 
+    def getHighScore(self):
+        f = open(basedir + os.sep +'TopScores.txt','r')
+        score = f.readline()
+        if len(score)>0:    
+            return int(score)
+        else:
+            return 0
 
-
-
-    def isGameOver(self):
-        def adjacent(position):
-            "returns the list of balls of the same colour adjacent to the ball at position- position"
-            x,y = position
-        for x in xrange(self.width):
-            for y in xrange(self.height):
-                if len(self.adjacent((x,y)))>0 and self.balls[x][y].colour!=WHITE:
-                    return False
+    def updateHighScore(self):
         if self.score>=self.highScore:
             self.highScore = self.score
             f = open(basedir + os.sep +'TopScores.txt','w')
             score = f.write(str(self.score))
+
+    def isGameOver(self):
+        for x in xrange(self.width):
+            for y in xrange(self.height):
+                if len(self.adjacent((x,y)))>0:
+                    return False
+        self.updateHighScore()
         return True
+
+
