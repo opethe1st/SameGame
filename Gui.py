@@ -19,6 +19,8 @@ DIAMETER = 32
 RADIUS = DIAMETER/2
 currentScore = 0
 GameOver = False
+
+
 def drawSquare(width,height):
     pygame.draw.rect(screen, WHITE, (0,0,width*DIAMETER,height*DIAMETER), 0)
     pygame.display.update()
@@ -40,7 +42,8 @@ def display(board):
     drawSquare(board.width,board.height)
     for x in range(board.width):
         for y in range(board.height):
-            drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
+            if board.balls[x][y]:
+                drawCircle(1,(RADIUS+x*DIAMETER,RADIUS+y*DIAMETER), board.balls[x][y].colour)
     drawJoiningSquare(board,RADIUS)
     displayscore(board)
 
@@ -50,7 +53,7 @@ def getCircle(board,radius):
         for y in range(board.height):
             x2,y2 = RADIUS+x*DIAMETER,RADIUS+y*DIAMETER
             distance = math.hypot(x1 - x2, y1 - y2)
-            if distance <= radius and board.balls[int((x2-RADIUS)/DIAMETER)][int((y2-RADIUS)/DIAMETER)].colour!=WHITE:
+            if distance <= radius and board.balls[int((x2-RADIUS)/DIAMETER)][int((y2-RADIUS)/DIAMETER)]:
                 return int((x2-RADIUS)/DIAMETER),int((y2-RADIUS)/DIAMETER)
     return None
 
