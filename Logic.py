@@ -111,7 +111,7 @@ class Board:
     
     #Public Interface  
     
-    def joiningSquares(self,side):
+    def joiningSquares(self):
         "Squares between each ball that's adjacent and of the same colour "
         squareballs = set()
         for x in range(self.width):
