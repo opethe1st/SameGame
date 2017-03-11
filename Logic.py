@@ -2,6 +2,7 @@ import random
 import os
 import sys
 
+#These are the settings for pyinstaller
 if getattr(sys, 'frozen', False):
     # we are running in a bundle
     basedir = sys._MEIPASS
@@ -9,6 +10,7 @@ else:
     # we are running in a normal Python environment
     basedir = '.'
 
+#RGB values for colours
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
@@ -38,14 +40,17 @@ class Board:
         self.score = 0
         self.currentScore = 0
         self.highScore = self.getHighScore()
+        self._initBoard()
     
-    def initBoard(self):
+    #helper Functions. private, prefixed by _underscore
+    def _initBoard(self):
+        "Randomly give each ball a colour"
         for i in range(self.width):
             for j in range(self.height):
                 self.balls[i][j].colour = BallColours[random.randint(0,4)]
 
-    def adjacent(self,position):
-            "returns the list of balls of the same colour adjacent to the ball at position- position"
+    def _adjacent(self,position):
+            "returns the list of balls of the same colour adjacent to the ball at position"
             x,y = position
             AdjacentSameBalls=[]
             for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
@@ -55,54 +60,20 @@ class Board:
                             AdjacentSameBalls.append((x+m,y+n))
             return AdjacentSameBalls
 
-    def findAdjacentBalls(self,ballposition):
-        """returns a list of all the balls of the same colour adjacent to ballposition"""
-        x,y = ballposition
-        stack = [ballposition]
-        visited = [[False for i in xrange(self.height)] for j in xrange(self.width) ]
-        
-        visited[x][y] = True
-        connectedballs = [ballposition]
-        while stack:
-            ballposition = stack.pop()
-            for position in self.adjacent(ballposition):
-                x1,y1 = position
-                if not visited[x1][y1]:
-                    
-                    stack.append(position)
-                    connectedballs.append(position)
-                    visited[x1][y1] = True
-             
-        return connectedballs
-        
-    def joiningSquares(self,side):
-        
-        squareballs = set()
-        for x in range(self.width):
-            for y in range(self.height):
-                for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
-                        if 0<=x+m<self.width and 0<=y+n<self.height:
-                            if self.balls[x][y] and self.balls[x+m][y+n]:
-                                if self.balls[x][y].colour==self.balls[x+m][y+n].colour and self.balls[x][y].colour!=WHITE:
-
-                                    square = Square(self.balls[x][y].colour, (x+m/2.0,y+n/2.0))
-                                    squareballs.add(square)
-                        
-        return squareballs
-
-    def markBalls(self,position):
-        connectedballs = self.findAdjacentBalls(position)
+    def _markBalls(self,position):
+        "Mark the balls that need to be deleted"
+        connectedballs = self._findAdjacentBalls(position)
         if len(connectedballs)==1: #means that it has no similarly coloured balls as neighbors
             return
-        self.score+=len(connectedballs)**2+100
+        self.score+=self.getScore(position)
         self.nmoves+=1
         for ballposition in connectedballs:
             x,y = ballposition
             self.balls[x][y]=None
             self.nballsleft-=1
     
-    def clearBalls(self):
-        "gravity. Balls fall into space vacated by removed balls"
+    def _clearBalls(self):
+        "delete the balls and let them fall into space vacated by removed balls"
         for i in xrange(self.width):
             for j in xrange(self.height):
                 if self.balls[i][j] is None:
@@ -119,6 +90,50 @@ class Board:
         if self.score>self.highScore:
             self.highScore = self.score
 
+    def _findAdjacentBalls(self,ballposition):
+        """returns a list of all the balls in the same group as the ball in position"""
+        x,y = ballposition
+        stack = [ballposition]
+        visited = [[False for i in xrange(self.height)] for j in xrange(self.width) ]
+        #basically a breadth first search. 
+        visited[x][y] = True
+        connectedballs = [ballposition]
+        while stack:
+            ballposition = stack.pop()
+            for position in self._adjacent(ballposition):
+                x1,y1 = position
+                if not visited[x1][y1]:
+                    stack.append(position)
+                    connectedballs.append(position)
+                    visited[x1][y1] = True
+             
+        return connectedballs
+    
+    #Public Interface  
+    
+    def joiningSquares(self,side):
+        "Squares between each ball that's adjacent and of the same colour "
+        squareballs = set()
+        for x in range(self.width):
+            for y in range(self.height):
+                for m,n in [(0,1),(0,-1),(1,0),(-1,0)]:
+                        if 0<=x+m<self.width and 0<=y+n<self.height:
+                            if self.balls[x][y] and self.balls[x+m][y+n]: #if there is a ball in both positions
+                                if self.balls[x][y].colour==self.balls[x+m][y+n].colour:
+                                    square = Square(self.balls[x][y].colour, (x+m/2.0,y+n/2.0))
+                                    squareballs.add(square)
+                        
+        return squareballs
+
+    def removeBalls(self,position):
+        "Mark the balls and remove the marked balls"
+        self._markBalls(position)
+        self._clearBalls()
+    
+    def getScore(self,position):
+        "get the score if you remove all the balls connected to the ball at position"
+        return len(self._findAdjacentBalls(position))**2
+
     def getHighScore(self):
         f = open(basedir + os.sep +'TopScores.txt','r')
         score = f.readline()
@@ -134,9 +149,10 @@ class Board:
             score = f.write(str(self.score))
 
     def isGameOver(self):
+        "Returns True if the Game is over and False otherwise"
         for x in xrange(self.width):
             for y in xrange(self.height):
-                if len(self.adjacent((x,y)))>0:
+                if len(self._adjacent((x,y)))>0:
                     return False
         self.updateHighScore()
         return True
