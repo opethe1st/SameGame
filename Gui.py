@@ -78,7 +78,7 @@ class GameDisplay:
                     return int((x2-self.RADIUS)/self.DIAMETER),int((y2-self.RADIUS)/self.DIAMETER)
         return None
     
-    def gameOverDisplay(self):
+    def _gameOverDisplay(self):
         self.GameOver = True
         
         pygame.font.init()
@@ -112,7 +112,7 @@ class GameDisplay:
                     sys.exit()
 
             if self.board.isGameOver():
-                self.gameOverDisplay()
+                self._gameOverDisplay()
  
 if __name__ == "__main__":
     myGame = GameDisplay()
