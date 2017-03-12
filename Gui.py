@@ -44,7 +44,7 @@ class GameDisplay:
         pygame.gfxdraw.filled_circle(self.screen, x, y , self.RADIUS-2, colour )
         pygame.gfxdraw.aacircle(self.screen, x, y , self.RADIUS-2, colour )
 
-    def _drawJoiningSquare(self):
+    def _drawJoiningSquares(self):
         squares = self.board.joiningSquares()
         for square in squares:
             x,y = square.position
@@ -58,13 +58,13 @@ class GameDisplay:
         self.screen.blit(textsurface,(1,self.GAME_HEIGHT+1))
         pygame.display.update()
 
-    def display(self):
+    def _display(self):
         self._drawSquare(self.board.width,self.board.height)
         for x in range(self.board.width):
             for y in range(self.board.height):
                 if self.board.balls[x][y]:
                     self._drawCircle((self.RADIUS+x*self.DIAMETER,self.RADIUS+y*self.DIAMETER), self.board.balls[x][y].colour)
-        self._drawJoiningSquare()
+        self._drawJoiningSquares()
         self._displayScore(0)
         pygame.display.update()
 
@@ -94,7 +94,7 @@ class GameDisplay:
         pygame.display.update()
 
     def run(self):
-        self.display()
+        self._display()
         while True:
             position = self._getPosition(radius=self.RADIUS)
             if position and not self.GameOver:
@@ -106,7 +106,7 @@ class GameDisplay:
                     position = self._getPosition(radius=self.RADIUS)
                     if position:
                         self.board.removeBalls(position)
-                        self.display()
+                        self._display()
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
