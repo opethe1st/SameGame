@@ -1,6 +1,3 @@
-#I need to have a click function - that gives which ball was clicked. clicked marks the ball and clears the ball then displays the modified 
-# board
-#I need to have a display board that draws the board on the screen.
 from Logic import Board,WHITE,BLACK,RED,BLUE,GREEN
 import pygame
 import pygame.gfxdraw
