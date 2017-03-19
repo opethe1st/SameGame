@@ -50,10 +50,11 @@ class GameDisplay:
     def _displayScore(self,current):
         pygame.draw.rect(self.screen, GREY, (0,self.GAME_HEIGHT,self.SCREEN_WIDTH,self.SCOREBOARD_HEIGHT), 0)
         pygame.font.init()
-        myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 24)
+        myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s'%(self.board.score,self.board.nmoves,current,self.board.highScore), 1, BLACK,GREY).convert()
         self.screen.blit(textsurface,(1,self.GAME_HEIGHT+1))
         pygame.display.update()
+        self._newGame()
 
     def _display(self):
         self._drawSquare(self.board.width,self.board.height)
@@ -71,7 +72,7 @@ class GameDisplay:
             for y in range(self.board.height):
                 x2,y2 = self.RADIUS+x*self.DIAMETER,self.RADIUS+y*self.DIAMETER
                 distance = math.hypot(x1 - x2, y1 - y2)
-                if distance <= radius and self.board.balls[int((x2-self.RADIUS)/self.DIAMETER)][int((y2-self.RADIUS)/self.DIAMETER)]:
+                if distance <= self.RADIUS and self.board.balls[int((x2-self.RADIUS)/self.DIAMETER)][int((y2-self.RADIUS)/self.DIAMETER)]:
                     return int((x2-self.RADIUS)/self.DIAMETER),int((y2-self.RADIUS)/self.DIAMETER)
         return None
     
@@ -85,14 +86,41 @@ class GameDisplay:
         self.screen.blit(textsurface,text_rect)
         
         pygame.draw.rect(self.screen, GREY, (0,self.GAME_HEIGHT,self.SCREEN_WIDTH,self.SCOREBOARD_HEIGHT), 0)
-        myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 24)
+        myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render('Your Score: %s Top Score: %s '%(self.board.score,self.board.highScore), 1, BLACK,GREY).convert()
         self.screen.blit(textsurface,(1,515))
+        self._newGame()
         pygame.display.update()
+    
+    def _newGame(self):
+        DARKGREY = (100,100,100)
+        LIGHTGREY = (230,230,230)
+        x1,y1 = pygame.mouse.get_pos()
+        if self.SCREEN_WIDTH*0.8<x1<self.SCREEN_WIDTH*0.8+self.SCREEN_WIDTH*0.15 and self.GAME_HEIGHT+7<y1<self.GAME_HEIGHT+7+self.SCOREBOARD_HEIGHT*0.70:
+            colour = LIGHTGREY
+        else:
+            colour = DARKGREY
+        pygame.draw.rect(self.screen, BLACK, (self.SCREEN_WIDTH*0.8,self.GAME_HEIGHT+7,self.SCREEN_WIDTH*0.15,self.SCOREBOARD_HEIGHT*0.70), 1)
+        pygame.draw.rect(self.screen, colour, (self.SCREEN_WIDTH*0.8,self.GAME_HEIGHT+7,self.SCREEN_WIDTH*0.15,self.SCOREBOARD_HEIGHT*0.70), 0)
+        pygame.font.init()
+        myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 22)
+        textsurface = myfont.render(' New Game', 1, BLACK,colour).convert()
+        self.screen.blit(textsurface,(self.SCREEN_WIDTH*0.8+3,self.GAME_HEIGHT+7))
+        pygame.display.update()
+    
+    def _buttonClicked(self):
+        x1,y1 = pygame.mouse.get_pos()
+        if self.SCREEN_WIDTH*0.8<x1<self.SCREEN_WIDTH*0.8+self.SCREEN_WIDTH*0.15 and self.GAME_HEIGHT+7<y1<self.GAME_HEIGHT+7+self.SCOREBOARD_HEIGHT*0.70:
+            return True
+        else:
+            return False
+
 
     def run(self):
         self._display()
+        breakLoop = False
         while True:
+            self._newGame()
             position = self._getPosition(radius=self.RADIUS)
             if position and not self.GameOver:
                 currentScore = self.board.getScore(position)
@@ -104,14 +132,20 @@ class GameDisplay:
                     if position:
                         self.board.removeBalls(position)
                         self._display()
+                    elif self._buttonClicked():
+                        breakLoop = True
+                        break
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
             if self.board.isGameOver():
                 self._gameOverDisplay()
+            if breakLoop:
+                break
  
 if __name__ == "__main__":
-    myGame = GameDisplay()
-    myGame.run()
+    while True:
+        myGame = GameDisplay()
+        myGame.run()
 
