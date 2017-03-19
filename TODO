@@ -5,9 +5,9 @@ To implement
     - fix GameOver code - just check if a ball has an adjacent ball - DONE
     - permanent storage for scoring                                 - DONE
     - show score when you hover over the ball                       - DONE
-    - optimizations, clean up the code
+    - optimizations, clean up the code                              - DONE
     - package as executable                                         - DONE
-    - Write a post about the process of developing this game
+    - Write a post about the process of developing this game        - DONE
     - Try to get my post into the MagPi
     - Add Logo for the executable
     - New Game Queston at end of game
