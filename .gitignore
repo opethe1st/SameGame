@@ -4,4 +4,3 @@ include/
 lib/
 .Python
 pip-selfcheck.json
-TopScores.txt
