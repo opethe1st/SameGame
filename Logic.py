@@ -10,19 +10,12 @@ else:
     # we are running in a normal Python environment
     basedir = '.'
 
-#RGB values for colours
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (34,139,34)
-RED =   (255,   0,   0)
-DARKORCHID =(153,50,204)
-BROWN = (165,42,42)
+#DEFAULT COLOUR SCHEME
+MONFAVORITE =[(247, 193, 187),(136, 90, 90),(220, 19, 108),(53, 58, 71), (132, 176, 130)]
 
-BallColours = [RED,BLUE,GREEN,DARKORCHID,BROWN]
 
 class Ball:
-    def __init__(self,colour = WHITE):
+    def __init__(self,colour = None):
         self.colour = colour
 
 class Square:
@@ -31,7 +24,7 @@ class Square:
         self.position = position
 
 class Board:
-    def __init__(self, width=20,height=16):
+    def __init__(self, width=20,height=16,BallColours = MONFAVORITE ):
         self.width = width
         self.height = height
         self.balls = [[Ball() for i in range(self.height)] for j in range(self.width)]
@@ -40,6 +33,7 @@ class Board:
         self.score = 0
         self.currentScore = 0
         self.highScore = self.getHighScore()
+        self.BallColours = BallColours
         self._initBoard()
     
     #helper Functions. private, prefixed by _underscore
@@ -47,7 +41,7 @@ class Board:
         "Randomly give each ball a colour"
         for i in range(self.width):
             for j in range(self.height):
-                self.balls[i][j].colour = BallColours[random.randint(0,4)]
+                self.balls[i][j].colour = self.BallColours[random.choice([0,1,2,3,4])]
 
     def _adjacent(self,position):
             "returns the list of balls of the same colour adjacent to the ball at position"

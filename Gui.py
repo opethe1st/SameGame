@@ -1,11 +1,29 @@
-from Logic import Board,WHITE,BLACK,RED,BLUE,GREEN
+from Logic import Board
 import pygame
 import pygame.gfxdraw
 import sys
 import math
 import os
 
+#COLOURS
 GREY = (150,150,150)
+BLACK = (  0,   0,   0)
+WHITE = (255, 255, 255)
+
+#COLOUR SCHEMES
+MONFAVORITE =[(247, 193, 187),(136, 90, 90),(220, 19, 108),(53, 58, 71), (132, 176, 130)]
+
+SOMBRE = [(35, 0, 7),(215, 207, 7),(217, 131, 36),(164, 6, 6), (90, 0, 2)]
+
+COOL = [(237, 37, 78), (249, 220, 92), (244, 255, 253),(1, 25, 54),(70, 83, 98)]
+
+COOL2 = [(73, 88, 103), (87, 115, 153),(189, 213, 234), (247, 247, 255), (254, 95, 85) ]
+
+COLD = [(25, 83, 95), (11, 122, 117), (215, 201, 170), (123, 45, 38), (240, 243, 245)]
+
+ICY = [(216, 219, 226), (169, 188, 208), (88, 164, 176),(55, 63, 81), (218, 164, 154)]
+
+SAVANNAH = [(91, 192, 235), (253, 231, 76), (155, 197, 61),(229, 89, 52),(250, 121, 33) ]
 #These are the settings for pyinstaller
 if getattr(sys, 'frozen', False):
     # we are running in a bundle
@@ -17,7 +35,7 @@ else:
 
 
 class GameDisplay:
-    def __init__(self):
+    def __init__(self,BallColours = MONFAVORITE,boardColour = WHITE):
         self.DIAMETER = 32 #size of the balls
         self.RADIUS = self.DIAMETER/2
         self.GameOver = False
@@ -27,14 +45,15 @@ class GameDisplay:
         self.GAME_HEIGHT = self.DIAMETER*self.HEIGHT
         self.SCREEN_WIDTH = self.DIAMETER*self.WIDTH
         self.SCREEN_HEIGHT = self.GAME_HEIGHT + self.SCOREBOARD_HEIGHT
+        self.boardColour = boardColour
         
         pygame.init()
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH,self.SCREEN_HEIGHT))
         pygame.display.set_caption('Same!')
-        self.board = Board(width=self.WIDTH,height=self.HEIGHT)
+        self.board = Board(width=self.WIDTH,height=self.HEIGHT,BallColours=BallColours)
 
     def _drawSquare(self,width,height):
-        pygame.draw.rect(self.screen, WHITE, (0,0,width*self.DIAMETER,height*self.DIAMETER), 0)
+        pygame.draw.rect(self.screen, self.boardColour, (0,0,width*self.DIAMETER,height*self.DIAMETER), 0)
 
     def _drawCircle(self,position,colour):
         x,y = position
@@ -81,7 +100,7 @@ class GameDisplay:
         
         pygame.font.init()
         myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 72)
-        textsurface = myfont.render('GAME OVER !!', 1, BLACK)
+        textsurface = myfont.render('GAME OVER !!', 1,BLACK)
         text_rect = textsurface.get_rect(center=(self.SCREEN_WIDTH/2, (self.SCREEN_HEIGHT-48)/2))
         self.screen.blit(textsurface,text_rect)
         
