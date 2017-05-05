@@ -72,9 +72,8 @@ class GameDisplay:
         myfont = pygame.font.Font(basedir + os.sep + "Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s'%(self.board.score,self.board.nmoves,current,self.board.highScore), 1, BLACK,GREY).convert()
         self.screen.blit(textsurface,(1,self.GAME_HEIGHT+1))
-        pygame.display.update()
         self._newGame()
-
+        #pygame.display.update()
     def _display(self):
         self._drawSquare(self.board.width,self.board.height)
         for x in range(self.board.width):
@@ -83,7 +82,7 @@ class GameDisplay:
                     self._drawCircle((self.RADIUS+x*self.DIAMETER,self.RADIUS+y*self.DIAMETER), self.board.balls[x][y].colour)
         self._drawJoiningSquares()
         self._displayScore(0)
-        pygame.display.update()
+        #pygame.display.update()
 
     def _getPosition(self,radius):
         x1,y1 = pygame.mouse.get_pos()
@@ -109,9 +108,10 @@ class GameDisplay:
         textsurface = myfont.render('Your Score: %s Top Score: %s '%(self.board.score,self.board.highScore), 1, BLACK,GREY).convert()
         self.screen.blit(textsurface,(1,515))
         self._newGame()
-        pygame.display.update()
+        #pygame.display.update()
     
     def _newGame(self):
+        #NewGame button in the scoreboard
         DARKGREY = (100,100,100)
         LIGHTGREY = (230,230,230)
         x1,y1 = pygame.mouse.get_pos()
@@ -128,6 +128,7 @@ class GameDisplay:
         pygame.display.update()
     
     def _buttonClicked(self):
+        #returns true if the button click was on the board area and not the scoreboard area
         x1,y1 = pygame.mouse.get_pos()
         if self.SCREEN_WIDTH*0.8<x1<self.SCREEN_WIDTH*0.8+self.SCREEN_WIDTH*0.15 and self.GAME_HEIGHT+7<y1<self.GAME_HEIGHT+7+self.SCOREBOARD_HEIGHT*0.70:
             return True
@@ -140,11 +141,12 @@ class GameDisplay:
         breakLoop = False
         while True:
             self._newGame()
+            #displays with the possible score if you click on this ball
             position = self._getPosition(radius=self.RADIUS)
             if position and not self.GameOver:
                 currentScore = self.board.getScore(position)
                 self._displayScore(currentScore)
-            
+            #handles all the events, button clicks etc
             for event in pygame.event.get():
                 if event.type==pygame.MOUSEBUTTONDOWN:
                     position = self._getPosition(radius=self.RADIUS)
