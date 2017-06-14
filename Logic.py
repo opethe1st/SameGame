@@ -1,3 +1,4 @@
+#! python2
 import random
 import os
 import sys
