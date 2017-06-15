@@ -1,3 +1,4 @@
+#! python2
 from Logic import Board
 import pygame
 import pygame.gfxdraw
