@@ -1,9 +1,7 @@
 /* Requires the Docker Pipeline plugin */
-node('docker') {
+node{
     checkout scm
     stage('Build') {
-        docker.image('python:3.5.1').inside {
-            sh 'python --version'
-        }
+        sh 'python --version'
     }
 }
