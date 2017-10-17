@@ -5,3 +5,4 @@ lib/
 .Python
 pip-selfcheck.json
 tags
+.env
