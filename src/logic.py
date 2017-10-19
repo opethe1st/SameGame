@@ -44,8 +44,7 @@ class Board:
         "Randomly give each ball a colour"
         for i in range(self.width):
             for j in range(self.height):
-                self.balls[i][j].colour = self.BallColours[random.choice([
-                                                                         0, 1, 2, 3, 4])]
+                self.balls[i][j].colour = self.BallColours[random.choice([0, 1, 2, 3, 4])]
 
     def _adjacent(self, position):
         "returns the list of balls of the same colour adjacent to the ball at position"
@@ -63,7 +62,7 @@ class Board:
         connectedballs = self._findAdjacentBalls(position)
         if len(connectedballs) == 1:  # means that it has no similarly coloured balls as neighbors
             return
-        self.score += self.getScore(position)
+        self.score += self.get_score(position)
         self.nmoves += 1
         for ballposition in connectedballs:
             x, y = ballposition
@@ -126,28 +125,28 @@ class Board:
 
         return squareballs
 
-    def removeBalls(self, position):
+    def remove_balls(self, position):
         "Mark the balls and remove the marked balls"
         self._markBalls(position)
         self._clearBalls()
 
-    def getScore(self, position):
+    def get_score(self, position):
         "get the score if you remove all the balls connected to the ball at position"
         return len(self._findAdjacentBalls(position))**2
 
     def getHighScore(self):
-        f = open(basedir + os.sep + 'TopScores.txt', 'r')
-        score = f.readline()
-        if len(score) > 0:
-            return int(score)
-        else:
-            return 0
+        with open(basedir + os.sep + 'TopScores.txt', 'r') as f:
+            score = f.readline()
+            if len(score) > 0:
+                return int(score)
+            else:
+                return 0
 
     def updateHighScore(self):
         if self.score >= self.highScore:
             self.highScore = self.score
-            f = open(basedir + os.sep + 'TopScores.txt', 'w')
-            score = f.write(str(self.score))
+            with open('TopScores.txt', 'w') as f:
+                score = f.write(str(self.score))
 
     def isGameOver(self):
         "Returns True if the Game is over and False otherwise"
