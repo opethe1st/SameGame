@@ -3,6 +3,8 @@ import random
 import os
 import sys
 
+from constants import ColourScheme
+
 # These are the settings for pyinstaller
 if getattr(sys, 'frozen', False):
     # we are running in a bundle
@@ -10,10 +12,6 @@ if getattr(sys, 'frozen', False):
 else:
     # we are running in a normal Python environment
     basedir = '.'
-
-# DEFAULT COLOUR SCHEME
-MONFAVORITE = [(247, 193, 187), (136, 90, 90),
-               (220, 19, 108), (53, 58, 71), (132, 176, 130)]
 
 
 class Ball:
@@ -28,7 +26,7 @@ class Square:
 
 
 class Board:
-    def __init__(self, width=20, height=16, BallColours=MONFAVORITE):
+    def __init__(self, width=20, height=16, BallColours=ColourScheme.MONFAVORITE):
         self.width = width
         self.height = height
         self.balls = [[Ball() for i in range(self.height)]
