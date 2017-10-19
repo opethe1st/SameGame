@@ -147,7 +147,7 @@ class GameDisplay:
             # displays with the possible score if you click on this ball
             position = self._getPosition(radius=self.RADIUS)
             if position and not self.GameOver:
-                currentScore = self.board.getScore(position)
+                currentScore = self.board.get_score(position)
                 self._displayScore(currentScore)
             # handles all the events, button clicks etc
             for event in pygame.event.get():

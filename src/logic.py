@@ -135,7 +135,7 @@ class Board:
         return len(self._findAdjacentBalls(position))**2
 
     def getHighScore(self):
-        with open(basedir + os.sep + 'TopScores.txt', 'r') as f:
+        with open('TopScores.txt', 'r') as f:
             score = f.readline()
             if len(score) > 0:
                 return int(score)
