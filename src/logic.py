@@ -26,7 +26,7 @@ class Square:
 
 
 class Board:
-    def __init__(self, width=20, height=16, BallColours=ColourScheme.MONFAVORITE):
+    def __init__(self, width=20, height=16, BallColours=None):
         self.width = width
         self.height = height
         self.balls = [[Ball() for i in range(self.height)]
@@ -35,10 +35,59 @@ class Board:
         self.nmoves = 0
         self.score = 0
         self.currentScore = 0
-        self.highScore = self.getHighScore()
-        self.BallColours = BallColours
+        self.highScore = self.get_high_score()
+        self.BallColours = BallColours or ColourScheme.MONFAVORITE
         self._initBoard()
 
+        # Public Interface
+
+    def joiningSquares(self):
+        "Squares between each ball that's adjacent and of the same colour "
+        squareballs = set()
+        for x in range(self.width):
+            for y in range(self.height):
+                for m, n in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                    if 0 <= x + m < self.width and 0 <= y + n < self.height:
+                        # if there is a ball in both positions
+                        if self.balls[x][y] and self.balls[x + m][y + n]:
+                            if self.balls[x][y].colour == self.balls[x + m][y + n].colour:
+                                square = Square(
+                                    self.balls[x][y].colour, (x + m / 2.0, y + n / 2.0))
+                                squareballs.add(square)
+
+        return squareballs
+
+    def remove_balls(self, position):
+        "Mark the balls and remove the marked balls"
+        self._markBalls(position)
+        self._clearBalls()
+
+    def get_score(self, position):
+        "get the score if you remove all the balls connected to the ball at position"
+        return len(self._findAdjacentBalls(position))**2
+
+    def get_high_score(self):
+        with open('TopScores.txt', 'r') as f:
+            score = f.readline()
+            if len(score) > 0:
+                return int(score)
+            else:
+                return 0
+
+    def update_high_score(self):
+        if self.score >= self.highScore:
+            self.highScore = self.score
+            with open('TopScores.txt', 'w') as f:
+                score = f.write(str(self.score))
+
+    def is_game_over(self):
+        "Returns True if the Game is over and False otherwise"
+        for x in range(self.width):
+            for y in range(self.height):
+                if len(self._adjacent((x, y))) > 0:
+                    return False
+        self.update_high_score()
+        return True
     # helper Functions. private, prefixed by _underscore
     def _initBoard(self):
         "Randomly give each ball a colour"
@@ -106,53 +155,3 @@ class Board:
                     visited[x1][y1] = True
 
         return connectedballs
-
-    # Public Interface
-
-    def joiningSquares(self):
-        "Squares between each ball that's adjacent and of the same colour "
-        squareballs = set()
-        for x in range(self.width):
-            for y in range(self.height):
-                for m, n in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                    if 0 <= x + m < self.width and 0 <= y + n < self.height:
-                        # if there is a ball in both positions
-                        if self.balls[x][y] and self.balls[x + m][y + n]:
-                            if self.balls[x][y].colour == self.balls[x + m][y + n].colour:
-                                square = Square(
-                                    self.balls[x][y].colour, (x + m / 2.0, y + n / 2.0))
-                                squareballs.add(square)
-
-        return squareballs
-
-    def remove_balls(self, position):
-        "Mark the balls and remove the marked balls"
-        self._markBalls(position)
-        self._clearBalls()
-
-    def get_score(self, position):
-        "get the score if you remove all the balls connected to the ball at position"
-        return len(self._findAdjacentBalls(position))**2
-
-    def getHighScore(self):
-        with open('TopScores.txt', 'r') as f:
-            score = f.readline()
-            if len(score) > 0:
-                return int(score)
-            else:
-                return 0
-
-    def updateHighScore(self):
-        if self.score >= self.highScore:
-            self.highScore = self.score
-            with open('TopScores.txt', 'w') as f:
-                score = f.write(str(self.score))
-
-    def isGameOver(self):
-        "Returns True if the Game is over and False otherwise"
-        for x in range(self.width):
-            for y in range(self.height):
-                if len(self._adjacent((x, y))) > 0:
-                    return False
-        self.updateHighScore()
-        return True

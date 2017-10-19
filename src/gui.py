@@ -154,7 +154,7 @@ class GameDisplay:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     position = self._getPosition(radius=self.RADIUS)
                     if position:
-                        self.board.removeBalls(position)
+                        self.board.remove_balls(position)
                         self._display()
                     elif self._buttonClicked():
                         breakLoop = True
@@ -163,13 +163,7 @@ class GameDisplay:
                     pygame.quit()
                     sys.exit()
 
-            if self.board.isGameOver():
+            if self.board.is_game_over():
                 self._gameOverDisplay()
             if breakLoop:
                 break
-
-
-if __name__ == "__main__":
-    while True:
-        myGame = GameDisplay()
-        myGame.run()
