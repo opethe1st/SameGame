@@ -60,7 +60,7 @@ class GameDisplay:
                                              self.SCREEN_WIDTH, self.SCOREBOARD_HEIGHT), 0)
         pygame.font.init()
         myfont = pygame.font.Font(
-            basedir + os.sep + "../resources/Fonts/angrybirds-regular.ttf", 22)
+            basedir + os.sep + "../static/Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render(' Score: %s Moves: %s Current move: %s Top Score: %s' % (
             self.board.score, self.board.nmoves, current, self.board.highScore), 1, Colour.BLACK, Colour.GREY).convert()
         self.screen.blit(textsurface, (1, self.GAME_HEIGHT + 1))
@@ -93,7 +93,7 @@ class GameDisplay:
 
         pygame.font.init()
         myfont = pygame.font.Font(
-            basedir + os.sep + "../resources/Fonts/angrybirds-regular.ttf", 72)
+            basedir + os.sep + "../static/Fonts/angrybirds-regular.ttf", 72)
         textsurface = myfont.render('GAME OVER !!', 1, BLACK)
         text_rect = textsurface.get_rect(
             center=(self.SCREEN_WIDTH / 2, (self.SCREEN_HEIGHT - 48) / 2))
@@ -102,7 +102,7 @@ class GameDisplay:
         pygame.draw.rect(self.screen, Colour.GREY, (0, self.GAME_HEIGHT,
                                              self.SCREEN_WIDTH, self.SCOREBOARD_HEIGHT), 0)
         myfont = pygame.font.Font(
-            basedir + os.sep + "../resources/Fonts/angrybirds-regular.ttf", 22)
+            basedir + os.sep + "../static/Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render('Your Score: %s Top Score: %s ' % (
             self.board.score, self.board.highScore), 1, Colour.BLACK, Colour.GREY).convert()
         self.screen.blit(textsurface, (1, 515))
@@ -124,7 +124,7 @@ class GameDisplay:
                                                7, self.SCREEN_WIDTH * 0.15, self.SCOREBOARD_HEIGHT * 0.70), 0)
         pygame.font.init()
         myfont = pygame.font.Font(
-            basedir + os.sep + "../resources/Fonts/angrybirds-regular.ttf", 22)
+            basedir + os.sep + "../static/Fonts/angrybirds-regular.ttf", 22)
         textsurface = myfont.render(' New Game', 1, Colour.BLACK, colour).convert()
         self.screen.blit(textsurface, (self.SCREEN_WIDTH *
                                        0.8 + 3, self.GAME_HEIGHT + 7))
