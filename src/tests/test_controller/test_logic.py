@@ -78,7 +78,7 @@ class TestGenerateBoxes(TestBoard):
             for j in range(n_cols):
                 if (i+j)%2 == 1:
                     if boxes[i][j].colour != 'red':
-                        self.fail
+                        self.fail()
 
     def test_no_boxes(self):
         self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
@@ -89,7 +89,7 @@ class TestGenerateBoxes(TestBoard):
         for i in range(n_rows):
             for j in range(n_cols):
                 if boxes[i][j] is not None:
-                    self.fail
+                    self.fail()
 
     def test_a_boxes(self):
         self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
