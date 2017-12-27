@@ -65,13 +65,13 @@ class TestGenerateRandomBalls(TestBoard):
 class TestGenerateBoxes(TestBoard):
 
     def test_size_box_arrays(self):
-        boxes = self.Board._generate_boxes()
+        boxes = self.Board.generate_boxes()
         self.assertEqual(2*self.height-1, len(boxes))
         self.assertEqual(2*self.width-1, len(boxes[0]))
 
     def test_all_balls_the_same_colour(self):
         self.Board.balls = [[Ball(colour='red') for i in range(self.width)] for j in range(self.height)]
-        boxes = self.Board._generate_boxes()
+        boxes = self.Board.generate_boxes()
         n_rows = len(boxes)
         n_cols = len(boxes[0])
         for i in range(n_rows):
@@ -83,7 +83,7 @@ class TestGenerateBoxes(TestBoard):
     def test_no_boxes(self):
         self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
         self.Board.balls = [[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='blue'), Ball(colour='red')]]
-        boxes = self.Board._generate_boxes()
+        boxes = self.Board.generate_boxes()
         n_rows = len(boxes)
         n_cols = len(boxes[0])
         for i in range(n_rows):
@@ -94,7 +94,7 @@ class TestGenerateBoxes(TestBoard):
     def test_a_boxes(self):
         self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
         self.Board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
-        boxes = self.Board._generate_boxes()
+        boxes = self.Board.generate_boxes()
         expectedBoxes = [[None, Box(colour='red'), None], [None, None, None], [None, Box(colour='blue'), None]]
         self.assertListEqual(boxes, expectedBoxes)
 
