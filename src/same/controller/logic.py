@@ -43,10 +43,6 @@ class Board:
 
         # Public Interface
 
-    def joiningSquares(self):
-        "Squares between each ball that's adjacent and of the same colour "
-        pass
-
     def remove_balls(self, position):
         "Mark the balls and remove the marked balls"
         self._markBalls(position)
@@ -89,7 +85,7 @@ class Board:
             balls.append(row_of_balls)
         return balls
 
-    def _generate_boxes(self):
+    def generate_boxes(self):
         row_edges = 2 * self.HEIGHT - 1
         col_edges = 2 * self.WIDTH - 1
         boxes = [[None for col in range(col_edges)] for row in range(row_edges)]
@@ -106,13 +102,22 @@ class Board:
     def _adjacent(self, position):
         "returns the list of balls of the same colour adjacent to the ball at position"
         x, y = position
-        AdjacentSameBalls = []
-        for m, n in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            if 0 <= x + m < self.width and 0 <= y + n < self.height:
-                if self.balls[x][y] and self.balls[x + m][y + n]:
-                    if self.balls[x][y].colour == self.balls[x + m][y + n].colour:
-                        AdjacentSameBalls.append((x + m, y + n))
-        return AdjacentSameBalls
+        colour = self.balls[x][y].colour
+        adjacent_balls = set([(x,y)])
+        stack = [(x,y)]
+        visited = set([x,y])
+        while stack:
+            x, y = stack.pop()
+            for i in [max(0, x-1), min(self.HEIGHT-1, x+1)]: # there is an error here, right? 0 might not be adjacent
+                for j in [max(0, y-1), min(self.WIDTH-1, y+1)]:
+                    if self.balls[i][j].colour == colour and (i,j) not in visited:
+                        adjacent_balls.add((i, j))
+                        stack.append((i, j))
+                    visited.add((i, j))
+        return adjacent_balls
+
+    def make_move(self, position):
+        pass
 
     def _markBalls(self, position):
         "Mark the balls that need to be deleted"
@@ -144,22 +149,3 @@ class Board:
         if self.score > self.highScore:
             self.highScore = self.score
 
-    def _findAdjacentBalls(self, ballposition):
-        """returns a list of all the balls in the same group as the ball in position"""
-        x, y = ballposition
-        stack = [ballposition]
-        visited = [[False for i in range(self.height)]
-                   for j in range(self.width)]
-        # basically a breadth first search.
-        visited[x][y] = True
-        connectedballs = [ballposition]
-        while stack:
-            ballposition = stack.pop()
-            for position in self._adjacent(ballposition):
-                x1, y1 = position
-                if not visited[x1][y1]:
-                    stack.append(position)
-                    connectedballs.append(position)
-                    visited[x1][y1] = True
-
-        return connectedballs

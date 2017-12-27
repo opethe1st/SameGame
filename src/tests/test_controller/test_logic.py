@@ -97,3 +97,35 @@ class TestGenerateBoxes(TestBoard):
         boxes = self.Board._generate_boxes()
         expectedBoxes = [[None, Box(colour='red'), None], [None, None, None], [None, Box(colour='blue'), None]]
         self.assertListEqual(boxes, expectedBoxes)
+
+
+class TestAdjacentBalls(TestBoard):
+
+    def test_adjacent_balls(self):
+        self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
+        self.Board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
+        adjacent_balls = self.Board._adjacent((0, 0))
+        expected_balls = set([(0,0), (0, 1)])
+        self.assertEqual(adjacent_balls, expected_balls)
+
+    def test_adjacent_balls_all(self):
+        self.Board = Board(WIDTH=2, HEIGHT=2, COLOURS=self.COLOURS)
+        self.Board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red')]]
+        adjacent_balls = self.Board._adjacent((0, 0))
+        expected_balls = set([(0,0), (0, 1), (1, 0), (1, 1)])
+        self.assertEqual(adjacent_balls, expected_balls)
+
+    def test_adjacent_balls_random(self):
+        self.Board = Board(WIDTH=3, HEIGHT=2, COLOURS=self.COLOURS)
+        self.Board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='blue'), Ball(colour='blue')]]
+        adjacent_balls = self.Board._adjacent((0, 0))
+        expected_balls = set([(0,0), (0, 1), (0, 2), (1, 0)])
+        self.assertEqual(adjacent_balls, expected_balls)
+
+    def test_just_one_adjacent_ball(self):
+        self.Board = Board(WIDTH=3, HEIGHT=2, COLOURS=self.COLOURS)
+        self.Board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red'), Ball(colour='blue')]]
+        adjacent_balls = self.Board._adjacent((1, 2))
+        expected_balls = set([(1, 2)])
+        self.assertEqual(adjacent_balls, expected_balls)
+
