@@ -53,7 +53,7 @@ class Board:
         return len(self._findAdjacentBalls(position))**2
 
     def get_high_score(self):
-        with open('/Users/ope/Documents/code/Projects/SameGame/src/same/data/TopScores.txt', 'r') as f:
+        with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/TopScores.txt'), 'r') as f:
             score = f.readline()
             if len(score) > 0:
                 return int(score)
@@ -63,7 +63,7 @@ class Board:
     def update_high_score(self):
         if self.score >= self.highScore:
             self.highScore = self.score
-            with open('/Users/ope/Documents/code/Projects/SameGame/src/same/data/TopScores.txt', 'w') as f:
+            with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/TopScores.txt'), 'r') as f:
                 score = f.write(str(self.score))
 
     def is_game_over(self):
