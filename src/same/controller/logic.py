@@ -35,7 +35,7 @@ class Board:
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.COLOURS = COLOURS
-        self.balls = self._generate_random_arrangement_of_balls()
+        self.balls = self._generate_random_arrangement_of_balls() # this seems wrong.. shouldn't be calling a function here should I?
         self.nmoves = 0
         self.score = 0
         self.currentScore = 0
@@ -117,6 +117,10 @@ class Board:
         return adjacent_balls
 
     def make_move(self, position):
+        positions_of_balls_to_remove = self._adjacent(position)
+        for position in positions_of_balls_to_remove:
+            x, y = position
+            self.balls[x][y] = None
         pass
 
     def _markBalls(self, position):
