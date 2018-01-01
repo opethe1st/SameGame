@@ -8,3 +8,4 @@ tags
 .env
 .vscode/
 .noseids
+.envFile
