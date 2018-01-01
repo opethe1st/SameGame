@@ -34,23 +34,23 @@ class Box:
 class Scorer:
 
     def __init__(self):
-        pass
+        self.score = 0
 
     @property
     def score(self):
-        pass
+        return self.score
 
     @score.setter
     def set_score(self, new_score):
-        pass
+        self.score = new_score
 
     @property
     def high_score(self):
-        pass
+        return 0
 
     @high_score.setter
     def update_high_score(self, new_high_score):
-        pass
+        self.score = new_high_score
 
 
 class Board:
@@ -63,14 +63,6 @@ class Board:
 
     def start_game(self):
         self.balls = self._generate_random_arrangement_of_balls()
-
-    def is_game_over(self):
-        "Returns True if the Game is over and False otherwise"
-        for x in range(self.width):
-            for y in range(self.height):
-                if len(self._adjacent((x, y))) > 0:
-                    return False
-        return True
 
     def _generate_random_arrangement_of_balls(self):
         balls = []
@@ -95,23 +87,13 @@ class Board:
                     boxes[row][col] = Box(colour=colour)
         return boxes
 
-
-    def _adjacent(self, position: tuple) -> List[tuple]:
-        "returns the list of positions with balls of the same colour adjacent to the ball at position"
-        x, y = position
-        colour = self.balls[x][y].colour
-        adjacent_balls = set([(x,y)])
-        stack = [(x,y)]
-        visited = set([x,y])
-        while stack:
-            x, y = stack.pop()
-            for i in [max(0, x-1), min(self.HEIGHT-1, x+1)]: # there is an error here, right? 0 might not be adjacent
-                for j in [max(0, y-1), min(self.WIDTH-1, y+1)]:
-                    if self.balls[i][j].colour == colour and (i,j) not in visited:
-                        adjacent_balls.add((i, j))
-                        stack.append((i, j))
-                    visited.add((i, j))
-        return adjacent_balls
+    def is_game_over(self):
+        "Returns True if the Game is over and False otherwise"
+        for x in range(self.width):
+            for y in range(self.height):
+                if len(self._adjacent((x, y))) > 0:
+                    return False
+        return True
 
     def make_move(self, position: tuple):
         self.mark_balls_to_remove(position=position)
@@ -124,6 +106,23 @@ class Board:
         for position in positions_of_balls_to_remove:
             x, y = position
             self.balls[x][y] = None
+
+    def _adjacent(self, position: tuple) -> List[tuple]:
+        "returns the list of positions with balls of the same colour adjacent to the ball at position"
+        x, y = position
+        colour = self.balls[x][y].colour
+        adjacent_balls = set([(x,y)])
+        stack = [(x,y)]
+        visited = set([x,y])
+        while stack:
+            x, y = stack.pop()
+            for i in [max(0, x-1), min(self.HEIGHT-1, x+1)]: # there is an error here, right? 0 might not be adjacent
+                for j in [max(0, y-1), min(self.WIDTH-1, y+1)]:
+                    if self.balls[i][j] is not None and self.balls[i][j].colour == colour and (i,j) not in visited:
+                        adjacent_balls.add((i, j))
+                        stack.append((i, j))
+                    visited.add((i, j))
+        return adjacent_balls
 
     def convert_rows_to_columns(self):
         columns_to_rows = [[None for i in range(self.HEIGHT)] for j in  range(self.WIDTH)]

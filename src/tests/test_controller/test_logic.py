@@ -137,7 +137,19 @@ class TestAdjacentBalls(TestBoard):
 
 
 class TestMakeMove(TestBoard):
-    pass
+
+    def test_make_move(self):
+        self.Board.mark_balls_to_remove = Mock()
+        self.Board.make_balls_fall = Mock()
+        self.Board.remove_empty_rows_between_columns = Mock()
+        self.Board.convert_cols_to_rows = Mock()
+
+        self.Board.make_move(position=(0, 0))
+
+        self.Board.mark_balls_to_remove.assert_called()
+        self.Board.make_balls_fall.assert_called()
+        self.Board.remove_empty_rows_between_columns.assert_called()
+        self.Board.convert_cols_to_rows.assert_called()
 
 
 class TestMarkBallsToRemove(TestBoard):
