@@ -1,70 +1,68 @@
 import random
 import os
 import sys
-
+from typing import List
 from same.data.constants import ColourScheme
 
 # These are the settings for pyinstaller
- # we are running in a bundle if sys.frozen else normal python
+# we are running in a bundle if sys.frozen else normal python
 basedir = sys._MEIPASS if getattr(sys, 'frozen', False) else '.'
 
 
 class Ball:
-    def __init__(self, colour):
+    def __init__(self, colour: str):
         self.colour = colour
 
     def __eq__(self, other):
-        return self.colour == other.colour
+        return self.colour == other.colour if type(self) == type(other) else False
 
     def __repr__(self):
         return 'Ball(colour={colour})'.format(colour=self.colour)
 
+
 class Box:
-    def __init__(self, colour):
+    def __init__(self, colour: str):
         self.colour = colour
 
-    def __eq__(self, other):
-        return self.colour == other.colour
+    def __eq__(self, other) -> bool:
+        return self.colour == other.colour if type(self) == type(other) else False
 
     def __repr__(self):
         return 'Box(colour={colour})'.format(colour=self.colour)
 
 
+class Scorer:
+
+    def __init__(self):
+        pass
+
+    @property
+    def score(self):
+        pass
+
+    @score.setter
+    def set_score(self, new_score):
+        pass
+
+    @property
+    def high_score(self):
+        pass
+
+    @high_score.setter
+    def update_high_score(self, new_high_score):
+        pass
+
+
 class Board:
-    def __init__(self, WIDTH, HEIGHT, COLOURS):
+    def __init__(self, WIDTH, HEIGHT, COLOURS, scorer):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.COLOURS = COLOURS
-        self.balls = self._generate_random_arrangement_of_balls() # this seems wrong.. shouldn't be calling a function here should I?
-        self.nmoves = 0
-        self.score = 0
-        self.currentScore = 0
-        self.highScore = self.get_high_score()
+        self.balls = None
+        self.scorer = scorer
 
-        # Public Interface
-
-    def remove_balls(self, position):
-        "Mark the balls and remove the marked balls"
-        self._markBalls(position)
-        self._clearBalls()
-
-    def get_score(self, position):
-        "get the score if you remove all the balls connected to the ball at position"
-        return len(self._findAdjacentBalls(position))**2
-
-    def get_high_score(self):
-        with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/TopScores.txt'), 'r') as f:
-            score = f.readline()
-            if len(score) > 0:
-                return int(score)
-            else:
-                return 0
-
-    def update_high_score(self):
-        if self.score >= self.highScore:
-            self.highScore = self.score
-            with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/TopScores.txt'), 'r') as f:
-                score = f.write(str(self.score))
+    def start_game(self):
+        self.balls = self._generate_random_arrangement_of_balls()
 
     def is_game_over(self):
         "Returns True if the Game is over and False otherwise"
@@ -72,7 +70,6 @@ class Board:
             for y in range(self.height):
                 if len(self._adjacent((x, y))) > 0:
                     return False
-        self.update_high_score()
         return True
 
     def _generate_random_arrangement_of_balls(self):
@@ -99,8 +96,8 @@ class Board:
         return boxes
 
 
-    def _adjacent(self, position):
-        "returns the list of balls of the same colour adjacent to the ball at position"
+    def _adjacent(self, position: tuple) -> List[tuple]:
+        "returns the list of positions with balls of the same colour adjacent to the ball at position"
         x, y = position
         colour = self.balls[x][y].colour
         adjacent_balls = set([(x,y)])
@@ -116,40 +113,46 @@ class Board:
                     visited.add((i, j))
         return adjacent_balls
 
-    def make_move(self, position):
+    def make_move(self, position: tuple):
+        self.mark_balls_to_remove(position=position)
+        csr_balls = self.make_balls_fall()
+        csr_balls = self.remove_empty_rows_between_columns(csr_balls=csr_balls)
+        self.convert_cols_to_rows(csr_balls=csr_balls)
+
+    def mark_balls_to_remove(self, position: tuple):
         positions_of_balls_to_remove = self._adjacent(position)
         for position in positions_of_balls_to_remove:
             x, y = position
             self.balls[x][y] = None
-        pass
 
-    def _markBalls(self, position):
-        "Mark the balls that need to be deleted"
-        connectedballs = self._findAdjacentBalls(position)
-        if len(connectedballs) == 1:  # means that it has no similarly coloured balls as neighbors
-            return
-        self.score += self.get_score(position)
-        self.nmoves += 1
-        for ballposition in connectedballs:
-            x, y = ballposition
-            self.balls[x][y] = None
-            self.nballsleft -= 1
+    def convert_rows_to_columns(self):
+        columns_to_rows = [[None for i in range(self.HEIGHT)] for j in  range(self.WIDTH)]
+        for i in range(self.HEIGHT):
+            for j in range(self.WIDTH):
+                columns_to_rows[j][i] = self.balls[(-i-1)%self.HEIGHT][j]
+        return columns_to_rows
 
-    def _clearBalls(self):
-        "delete the balls and let them fall into space vacated by removed balls"
-        for i in range(self.width):
-            for j in range(self.height):
-                if self.balls[i][j] is None:
-                    for k in reversed(range(j)):
-                        self.balls[i][k + 1] = self.balls[i][k]
-                    self.balls[i][0] = None
-        # shift to the left when the last row has an empty column
-        for i in reversed(range(self.width)):  # through columns
-            if self.balls[i][-1] is None:
-                for j in range(self.height):
-                    for k in (range(i, self.width - 1)):
-                        self.balls[k][j] = self.balls[k + 1][j]
-                    self.balls[-1][j] = None
-        if self.score > self.highScore:
-            self.highScore = self.score
+    def make_balls_fall(self):
+        columns_to_rows = self.convert_rows_to_columns()
+        for i in range(len(columns_to_rows)):
+            columns_to_rows[i] = list(filter(lambda x: x is not None, columns_to_rows[i]))  # remove the Nones
+            number_of_empty_positions = self.WIDTH-len(columns_to_rows[i])
+            columns_to_rows[i] += [None] * number_of_empty_positions  # pad with Nones
+        return columns_to_rows
 
+    def remove_empty_rows_between_columns(self, csr_balls):
+        columnsList = []
+        for i in range(len(csr_balls)):
+            if any(csr_balls[i]):
+                columnsList.append(i)
+        for i, column in enumerate(columnsList):
+            csr_balls[i] = csr_balls[column]
+        number_of_empty_cols = self.WIDTH - len(columnsList)
+        for i in range(len(columnsList), len(csr_balls)):
+            csr_balls[i] = [None]*self.HEIGHT
+        return csr_balls
+
+    def convert_cols_to_rows(self, csr_balls):
+        for i in range(self.HEIGHT):
+            for j in range(self.WIDTH):
+                self.balls[i][j] = csr_balls[j][(-i-1)%self.HEIGHT]
