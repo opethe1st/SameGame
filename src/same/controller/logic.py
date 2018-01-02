@@ -60,7 +60,7 @@ class Board:
     def start_game(self):
         self.balls = self.generate_random_balls()
 
-    def generate_random_balls(self):
+    def generate_random_balls(self) -> List[List[Ball]]:
         balls = []
         for _ in range(self.height):
             row_of_balls = []
@@ -70,7 +70,7 @@ class Board:
             balls.append(row_of_balls)
         return balls
 
-    def generate_boxes(self):
+    def generate_boxes(self) -> List[List[Ball]]:
         row_edges = 2 * self.height - 1
         col_edges = 2 * self.width - 1
         boxes = [[None for col in range(col_edges)] for row in range(row_edges)]
@@ -120,14 +120,14 @@ class Board:
                     visited.add((i, j))
         return adjacent_balls
 
-    def convert_rows_to_columns(self):
+    def convert_rows_to_columns(self) -> List[List[Ball]]:
         columns_to_rows = [[None for i in range(self.height)] for j in  range(self.width)]
         for i in range(self.height):
             for j in range(self.width):
                 columns_to_rows[j][i] = self.balls[(-i-1)%self.height][j]
         return columns_to_rows
 
-    def make_balls_fall(self):
+    def make_balls_fall(self) -> List[List[Ball]]:
         columns_to_rows = self.convert_rows_to_columns()
         for i, _ in enumerate(columns_to_rows):
             columns_to_rows[i] = list(filter(lambda x: x is not None, columns_to_rows[i]))  # remove the Nones
@@ -135,7 +135,7 @@ class Board:
             columns_to_rows[i] += [None] * number_of_empty_positions  # pad with Nones
         return columns_to_rows
 
-    def remove_empty_rows(self, csr_balls):
+    def remove_empty_rows(self, csr_balls: List[List[Ball]]) -> List[List[Ball]]:
         columns_list = []
         for i, _ in enumerate(csr_balls):
             if any(csr_balls[i]):
@@ -146,7 +146,7 @@ class Board:
             csr_balls[i] = [None]*self.height
         return csr_balls
 
-    def convert_cols_to_rows(self, csr_balls):
+    def convert_cols_to_rows(self, csr_balls: List[List[Ball]]):
         for i in range(self.height):
             for j in range(self.width):
                 self.balls[i][j] = csr_balls[j][(-i-1)%self.height]
