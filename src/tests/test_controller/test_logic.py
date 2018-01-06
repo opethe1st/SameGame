@@ -111,27 +111,27 @@ class TestAdjacentBalls(TestBoard):
 
     def test_adjacent_balls(self):
         self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent((0, 0))
+        adjacent_balls = self.board.adjacent(position=(0, 0))
         expected_balls = set([(0, 0), (0, 1)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_adjacent_balls_all(self):
         self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red')]]
-        adjacent_balls = self.board.adjacent((0, 0))
+        adjacent_balls = self.board.adjacent(position=(0, 0))
         expected_balls = set([(0, 0), (0, 1), (1, 0), (1, 1)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_adjacent_balls_random(self):
         self.board = Board(width=3, height=2, colours=self.colours, scorer=self.scorer)
         self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='blue'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent((0, 0))
+        adjacent_balls = self.board.adjacent(position=(0, 0))
         expected_balls = set([(0, 0), (0, 1), (0, 2), (1, 0)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_just_one_adjacent_ball(self):
         self.board = Board(width=3, height=2, colours=self.colours, scorer=self.scorer)
         self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent((1, 2))
+        adjacent_balls = self.board.adjacent(position=(1, 2))
         expected_balls = set([(1, 2)])
         self.assertEqual(adjacent_balls, expected_balls)
 
