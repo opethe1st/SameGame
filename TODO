@@ -12,3 +12,5 @@ To implement
     - Add Logo for the executable
     - New Game Queston at end of game                               - DONE
 
+
+    - Refactor scorer to take the entire board, modifiy scorer for special cases like when we have a rectangle or a square, score more point.

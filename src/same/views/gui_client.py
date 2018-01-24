@@ -1,12 +1,9 @@
 class GuiClient:
-    '''Abstract class implemented by a client object for a particular GUI framework'''
-    def __init__(self, board_position, board_dimensions, score_board_position, score_board_dimensions):
-        self.board_position = board_position
-        self.board_dimensions = board_dimensions
-        self.score_board_position = score_board_position
-        self.score_board_dimensions = score_board_dimensions
+    '''Abstract class implemented by a client class for a particular GUI framework'''
+    def __init__(self, size, num_columns, num_rows, board_position, score_board_height, colours):  # pylint: disable=unused-argument
+        raise NotImplementedError
 
-    def start_game(self):  # needed??? Just the draw initial game
+    def end_game(self):  # needed???
         raise NotImplementedError
 
     def draw_game(self, balls, boxes, score, highest_score, current_move_score):  # pylint: disable=too-many-arguments

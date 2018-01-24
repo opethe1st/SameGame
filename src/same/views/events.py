@@ -8,5 +8,3 @@ class BallClickedEvent(Event):
 class GameQuit(Event):
     pass
 
-class GameOver(Event):
-    pass
