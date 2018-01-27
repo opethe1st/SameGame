@@ -1,11 +1,13 @@
 import math
 import sys
 import pygame
+import pygame.locals
 import pygame.gfxdraw
 
 from same.data.constants import Colour
 from same.views.gui_client import GuiClient
 from same.views.events import BallClickedEvent, GameQuit  # pylint: disable=W0611
+
 
 
 class PyGameClient(GuiClient):
@@ -24,8 +26,8 @@ class PyGameClient(GuiClient):
 
     def draw_board(self, balls, boxes):
         pygame.draw.rect(self.screen, Colour.WHITE, (0, 0, self.num_columns * self.size, self.num_rows * self.size), 0)
-        for i, row in enumerate(balls):
-            for j, ball in enumerate(row):
+        for j, row in enumerate(balls):
+            for i, ball in enumerate(row):
                 if ball:
                     self.draw_circle(position=(i, j), colour=self.colours[ball.colour])
         # draw the boxes

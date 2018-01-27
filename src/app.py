@@ -1,4 +1,3 @@
-#! python3
 import sys
 
 from same.controller import Board
@@ -22,24 +21,25 @@ class SameGame:
 
     def play_game(self):
         changed = False
-        self.board.start_game()
         self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
-        current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
+        current_move_score = 0#self.board.get_score(position=self.gui_client.get_current_ball())
         self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
         while True:
+            # self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
+
             # handle events
-            for event in self.gui_client.get_event():
-                if isinstance(BallClickedEvent, event):
+            for event in self.gui_client.get_events():
+                if isinstance(event, BallClickedEvent):
                     self.board.make_move(position=event.position)
                     changed = True
-                elif isinstance(GameQuit, event):
+                elif isinstance(event, GameQuit):
                     self.gui_client.end_game()
-            # draw the board again
+        #     # draw the board again
             if changed:
-                self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.boxes)
+                self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
                 changed = False
-            current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
-            self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
+        #         current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
+        #         self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
             # quit if the game is over
             if self.board.is_game_over():
                 self.gui_client.end_game()
@@ -47,8 +47,10 @@ class SameGame:
 
 
 if __name__ == '__main__':
+    num_columns = 16
+    num_rows = 14
     aScorer = Scorer()  # pylint: disable=invalid-name
-    aBoard = Board(num_rows=16, num_columns=14, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
-    aGuiClient = PyGameClient(size=32, num_columns=20, num_rows=16, board_position=(10, 10), score_board_height=200, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
+    aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
+    aGuiClient = PyGameClient(size=32, num_rows=num_rows, num_columns=num_columns, board_position=(10, 10), score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
     sameGame = SameGame(board=aBoard, gui_client=aGuiClient, scorer=aScorer)  # pylint: disable=invalid-name
     sameGame.play_game()

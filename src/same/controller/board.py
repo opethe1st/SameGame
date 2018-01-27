@@ -1,9 +1,11 @@
+import pprint
 import random
 from typing import List
 
 from same.controller.ball import Ball
 from same.controller.box import Box
 
+pp = pprint.PrettyPrinter(width=140)
 
 class Board:
 
@@ -13,6 +15,7 @@ class Board:
         self.colours = [i for i in range(num_colours)]
         self.balls = self.generate_random_balls()
         self.scorer = scorer
+        # pp.pprint(self.balls)
 
     def get_balls(self) -> List[List[Ball]]:
         return self.balls
@@ -48,36 +51,46 @@ class Board:
         "Returns True if the Game is over and False otherwise"
         for x_pos in range(self.num_columns):
             for y_pos in range(self.num_rows):
-                if len(self.adjacent((x_pos, y_pos))) > 1:
+                if len(self.adjacent(position=(x_pos, y_pos))) > 0:
                     return False
         return True
 
     def make_move(self, position: tuple):
         self.mark_balls_to_remove(position=position)
-        print(self.balls)
         csr_balls = self.make_balls_fall()
+        # print('csr_balls')
+        # pp.pprint(csr_balls)
         csr_balls = self.remove_empty_rows(csr_balls=csr_balls)
         self.convert_cols_to_rows(csr_balls=csr_balls)
+        # print('balls after move')
+        # pp.pprint(self.balls)
 
     def mark_balls_to_remove(self, position: tuple):
+        if position is None or self.balls[position[1]][position[0]] is None:
+            return
         positions_of_balls_to_remove = self.adjacent(position)
+        # print('position of balls to remove')
+        # pp.pprint(positions_of_balls_to_remove)
         for pos in positions_of_balls_to_remove:
             x_pos, y_pos = pos
             self.balls[x_pos][y_pos] = None
+        # print('position', position)
+        # print('balls removed')
+        # pp.pprint(self.balls)
 
     def adjacent(self, position: tuple) -> List[tuple]:
         "returns the list of positions with balls of the same colour adjacent to the ball at position"
-        if position is None:
+        if position is None or self.balls[position[1]][position[0]] is None:
             return []
-        x_pos, y_pos = position
+        y_pos, x_pos = position
+        # print('position of move',)
         colour = self.balls[x_pos][y_pos].colour
         adjacent_balls = set([(x_pos, y_pos)])
         stack = [(x_pos, y_pos)]
         visited = set([x_pos, y_pos])
         while stack:
             x_pos, y_pos = stack.pop()
-            for i in [max(0, x_pos-1), min(self.num_rows-1, x_pos+1)]: # there is an error here, right? 0 might not be adjacent
-                for j in [max(0, y_pos-1), min(self.num_columns-1, y_pos+1)]:
+            for (i, j) in [(max(0, x_pos-1), y_pos), (min(self.num_rows-1, x_pos+1), y_pos), (x_pos, max(0, y_pos-1)), (x_pos, min(self.num_columns-1, y_pos+1))]:
                     if self.balls[i][j] is not None and self.balls[i][j].colour == colour and (i, j) not in visited:
                         adjacent_balls.add((i, j))
                         stack.append((i, j))
@@ -85,18 +98,26 @@ class Board:
         return adjacent_balls
 
     def convert_rows_to_columns(self) -> List[List[Ball]]:
-        columns_to_rows = [[None for i in range(self.num_rows)] for j in  range(self.num_columns)]
+        columns_to_rows = [[None for j in range(self.num_rows)] for i in  range(self.num_columns)]
+        for j in range(self.num_rows):
+            for i in range(self.num_columns):
+                columns_to_rows[i][j] = self.balls[j][i]
+        return columns_to_rows
+
+    def convert_cols_to_rows(self, csr_balls: List[List[Ball]]):
+        # print('self.balls', self.balls)
+        # print('csr_balls', csr_balls)
         for i in range(self.num_rows):
             for j in range(self.num_columns):
-                columns_to_rows[j][i] = self.balls[(-i-1)%self.num_rows][j]
-        return columns_to_rows
+                self.balls[i][j] = csr_balls[j][i]
 
     def make_balls_fall(self) -> List[List[Ball]]:
         columns_to_rows = self.convert_rows_to_columns()
+        csr_num_columns = len(columns_to_rows[0])
         for i, _ in enumerate(columns_to_rows):
-            columns_to_rows[i] = list(filter(lambda x: x is not None, columns_to_rows[i]))  # remove the Nones
-            number_of_empty_positions = self.num_rows-len(columns_to_rows[i])
-            columns_to_rows[i] += [None] * number_of_empty_positions  # pad with Nones
+            non_empty_columns = list(filter(lambda x: x is not None, columns_to_rows[i]))  # remove the Nones
+            empty_cols = [None for i in range(csr_num_columns - len(non_empty_columns))]
+            columns_to_rows[i] = empty_cols + non_empty_columns  # pad with Nones
         return columns_to_rows
 
     def remove_empty_rows(self, csr_balls: List[List[Ball]]) -> List[List[Ball]]:
@@ -109,11 +130,6 @@ class Board:
         for i in range(len(columns_list), len(csr_balls)):
             csr_balls[i] = [None]*self.num_rows
         return csr_balls
-
-    def convert_cols_to_rows(self, csr_balls: List[List[Ball]]):
-        for i in range(self.num_rows):
-            for j in range(self.num_columns):
-                self.balls[i][j] = csr_balls[j][(-i-1)%self.num_rows]
 
     def get_score(self, position):
         return self.scorer.get_score(balls=self.adjacent(position=position))

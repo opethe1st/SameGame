@@ -7,7 +7,7 @@ class Scorer:
     def get_current_score(self):
         return 0
 
-    def get_score(self, balls):
+    def get_score(self, balls):  # pylint: disable=unused-argument
         return self.score
 
     def set_score(self, new_score):

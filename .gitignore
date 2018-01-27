@@ -6,3 +6,5 @@ lib/
 pip-selfcheck.json
 tags
 .env
+.noseids
+.vscode/
