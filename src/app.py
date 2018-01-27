@@ -38,8 +38,8 @@ class SameGame:
             if changed:
                 self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
                 changed = False
-        #         current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
-        #         self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
+            current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
+            self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
             # quit if the game is over
             if self.board.is_game_over():
                 self.gui_client.end_game()

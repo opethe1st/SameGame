@@ -62,13 +62,17 @@ class Board:
         # pp.pprint(csr_balls)
         csr_balls = self.remove_empty_rows(csr_balls=csr_balls)
         self.convert_cols_to_rows(csr_balls=csr_balls)
+        if len(self.adjacent(position=position)) > 1:
+            self.update_current_score(current_move_score=self.get_score(position=position))
         # print('balls after move')
         # pp.pprint(self.balls)
 
     def mark_balls_to_remove(self, position: tuple):
         if position is None or self.balls[position[1]][position[0]] is None:
             return
-        positions_of_balls_to_remove = self.adjacent(position)
+        positions_of_balls_to_remove = self.adjacent(position=position)
+        if len(positions_of_balls_to_remove) == 1:
+            return
         # print('position of balls to remove')
         # pp.pprint(positions_of_balls_to_remove)
         for pos in positions_of_balls_to_remove:
@@ -136,6 +140,9 @@ class Board:
 
     def get_current_score(self):
         return self.scorer.get_current_score()
+
+    def update_current_score(self, current_move_score):
+        return self.scorer.update_current_score(score=current_move_score)
 
     def set_current_score(self):
         return self.scorer.set_current_score()

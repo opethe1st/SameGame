@@ -64,9 +64,15 @@ class PyGameClient(GuiClient):
                     return x, y
         return None
 
-    @staticmethod
-    def get_current_ball():
-        pass
+    def get_current_ball(self):
+        x1, y1 = pygame.mouse.get_pos()
+        for x in range(self.num_columns):
+            for y in range(self.num_rows):
+                x2, y2 = (x + 0.5) * self.size, (y + 0.5) * self.size
+                distance = math.hypot(x1 - x2, y1 - y2)
+                if distance <= self.size//2:
+                    return x, y
+        return None
 
     def get_events(self):
         events = []
