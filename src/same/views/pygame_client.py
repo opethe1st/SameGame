@@ -31,6 +31,10 @@ class PyGameClient(GuiClient):
                 if ball:
                     self.draw_circle(position=(i, j), colour=self.colours[ball.colour])
         # draw the boxes
+        for j , row in enumerate(boxes):
+            for i, box in enumerate(row):
+                if box:
+                    pygame.draw.rect(self.screen, self.colours[box.colour], (self.size//2*i+2, self.size//2*j+2, self.size-3, self.size-3), 0)
         pygame.display.update()
 
     def draw_circle(self, position, colour):
