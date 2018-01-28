@@ -53,6 +53,10 @@ class PyGameClient(GuiClient):
         self.screen.blit(textsurface, (1, self.board_dimensions[1]-self.score_board_height + 1))
         pygame.display.update()
 
+    def game_over(self):
+        print("no valid moves left, Game Over!")
+        # TODO[ope]: add Game Over text to the screen.
+        
     def end_game(self):
         print("End the Game")
         pygame.quit()

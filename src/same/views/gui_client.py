@@ -3,7 +3,10 @@ class GuiClient:
     def __init__(self, size, num_columns, num_rows, board_position, score_board_height, colours):  # pylint: disable=unused-argument
         raise NotImplementedError
 
-    def end_game(self):  # needed???
+    def game_over(self):
+        raise NotImplementedError
+
+    def end_game(self):
         raise NotImplementedError
 
     def draw_game(self, balls, boxes, score, highest_score, current_move_score):  # pylint: disable=too-many-arguments

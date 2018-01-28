@@ -53,7 +53,6 @@ class Board:
             for y_pos in range(self.num_rows):
                 if len(self.adjacent(position=(x_pos, y_pos))) > 1:
                     return False
-        print("no valid moves left, Game Over!")
         return True
 
     def make_move(self, position: tuple):

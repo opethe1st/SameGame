@@ -1,5 +1,5 @@
 # TO DOs in no particular order
- - Draw boxes between adjacent balls of the same colour
+ - Draw boxes between adjacent balls of the same colour - Done
  - Keep track of the highest score in a database
  - Add hints for available moves to play
  - Implement different scoring strategies for example, when the balls to be removed form a square
