@@ -1,7 +1,7 @@
 import sys
 
-from same.controller import Board
-from same.controller import Scorer
+from same.model import Board
+from same.model import Scorer
 from same.data.constants import ColourScheme
 from same.views.pygame_client import PyGameClient
 from same.views.events import BallClickedEvent
@@ -14,10 +14,9 @@ BASE_DIR = sys._MEIPASS if getattr(sys, 'frozen', False) else '.'  # pylint: dis
 
 class SameGame:
 
-    def __init__(self, board, gui_client, scorer):
+    def __init__(self, board, gui_client):
         self.board = board
         self.gui_client = gui_client
-        self.scorer = scorer
 
     def play_game(self):
         changed = False
@@ -40,8 +39,6 @@ class SameGame:
                 changed = False
             current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
             self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
-            # quit if the game is over
-
 
 
 if __name__ == '__main__':

@@ -13,4 +13,5 @@
  - Implement this game in C++
  - Save Game state
  - Use a different gui framework say tkinter, wxPython, SDL
- - Detailed post describing how I built this game, the iterations - reasons behind decisions, architecture 
+ - Detailed post describing how I built this game, the iterations - reasons behind decisions, architecture
+ - Undo a move

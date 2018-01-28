@@ -2,8 +2,8 @@ import pprint
 import random
 from typing import List
 
-from same.controller.ball import Ball
-from same.controller.box import Box
+from same.model.ball import Ball
+from same.model.box import Box
 
 pp = pprint.PrettyPrinter(width=140)
 
