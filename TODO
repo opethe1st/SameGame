@@ -1,0 +1,16 @@
+# TO DOs in no particular order
+ - Draw boxes between adjacent balls of the same colour
+ - Keep track of the highest score in a database
+ - Add hints for available moves to play
+ - Implement different scoring strategies for example, when the balls to be removed form a square
+ - Remove unneeded code
+ - Add tests for other parts
+ - Implement user login
+ - Add a top score service
+ - Implement login with Google/Facebook
+ - Implement this game in Andriod
+ - Implement this game in Javascript/On the web
+ - Implement this game in C++
+ - Save Game state
+ - Use a different gui framework say tkinter, wxPython, SDL
+ - Detailed post describing how I built this game, the iterations - reasons behind decisions, architecture 

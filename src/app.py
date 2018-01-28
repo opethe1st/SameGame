@@ -25,8 +25,6 @@ class SameGame:
         current_move_score = 0#self.board.get_score(position=self.gui_client.get_current_ball())
         self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
         while True:
-            # self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
-
             # handle events
             for event in self.gui_client.get_events():
                 if isinstance(event, BallClickedEvent):
@@ -34,16 +32,16 @@ class SameGame:
                     changed = True
                 elif isinstance(event, GameQuit):
                     self.gui_client.end_game()
-        #     # draw the board again
+                elif self.board.is_game_over():
+                    self.gui_client.end_game()
+            # draw the board again
             if changed:
                 self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
                 changed = False
             current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
             self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
             # quit if the game is over
-            if self.board.is_game_over():
-                self.gui_client.end_game()
-                break
+
 
 
 if __name__ == '__main__':
