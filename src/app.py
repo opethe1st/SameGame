@@ -47,5 +47,5 @@ if __name__ == '__main__':
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
     aGuiClient = PyGameClient(size=32, num_rows=num_rows, num_columns=num_columns, board_position=(10, 10), score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
-    sameGame = SameGame(board=aBoard, gui_client=aGuiClient, scorer=aScorer)  # pylint: disable=invalid-name
+    sameGame = SameGame(board=aBoard, gui_client=aGuiClient)  # pylint: disable=invalid-name
     sameGame.play_game()
