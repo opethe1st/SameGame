@@ -1,6 +1,6 @@
 from unittest.case import TestCase
 
-from same.controller import Box
+from same.model import Box
 
 
 class TestBox(TestCase):

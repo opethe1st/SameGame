@@ -1,6 +1,6 @@
 from unittest.case import TestCase
 
-from same.controller import Ball
+from same.model import Ball
 
 
 class TestBall(TestCase):

@@ -2,10 +2,10 @@ from unittest.mock import create_autospec
 from unittest.mock import Mock
 from unittest.case import TestCase
 
-from same.controller import Ball
-from same.controller import Box
-from same.controller import Board
-from same.controller import Scorer
+from same.model import Ball
+from same.model import Box
+from same.model import Board
+from same.model import Scorer
 
 
 class TestBoard(TestCase):
