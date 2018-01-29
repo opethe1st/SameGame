@@ -40,11 +40,11 @@ class SameGame:
             if self.board.is_game_over():
                 self.gui_client.game_over()
 
-def main(num_columns = 23, num_rows = 14, size=32):
+def main(num_columns=16, num_rows=14, size=32):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
     aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, board_position=(10, 10), score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
     sameGame = SameGame(board=aBoard, gui_client=aGuiClient)  # pylint: disable=invalid-name
     sameGame.play_game()
 
-main()
+main(num_columns=25, num_rows=20 , size=24)
