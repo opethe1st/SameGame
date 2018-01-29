@@ -7,7 +7,7 @@ You need pygame and python 3 to run the program. To install pygame:
 
 to run use:
 
-    cd src && python run.py
+    cd src && python app.py
 
 You can also download executable files for different platforms here:
 
