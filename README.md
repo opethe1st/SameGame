@@ -18,4 +18,6 @@ and you can also compile your own executable from source using pyinstaller
 
     pyinstaller Gui.spec --windowed --onefile
 
+
+</br>
 <img src="https://travis-ci.org/opethe1st/SameGame.svg?branch=develop">
