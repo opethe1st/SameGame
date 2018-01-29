@@ -19,4 +19,3 @@ You can also download executable files for different platforms here:
 and you can also compile your own executable from source using pyinstaller
 
     pyinstaller Gui.spec --windowed --onefile
-
