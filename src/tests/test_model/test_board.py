@@ -49,8 +49,8 @@ class TestGenerateBoxes(TestBoard):
 
     def test_size_box_arrays(self):
         boxes = self.board.generate_boxes()
-        self.assertEqual(2*self.num_rows-1, len(boxes))
-        self.assertEqual(2*self.num_columns-1, len(boxes[0]))
+        self.assertEqual(2 * self.num_rows - 1, len(boxes))
+        self.assertEqual(2 * self.num_columns - 1, len(boxes[0]))
 
     def test_all_balls_the_same_colour(self):
         self.board.balls = [[Ball(colour='red') for i in range(self.num_columns)] for j in range(self.num_rows)]
@@ -59,7 +59,7 @@ class TestGenerateBoxes(TestBoard):
         n_cols = len(boxes[0])
         for i in range(n_rows):
             for j in range(n_cols):
-                if (i+j)%2 == 1:
+                if (i + j) % 2 == 1:
                     if boxes[i][j].colour != 'red':
                         self.fail()
 
