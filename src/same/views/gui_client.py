@@ -1,5 +1,6 @@
 class GuiClient:
     '''Abstract class implemented by a client class for a particular GUI framework'''
+
     def __init__(self, size, num_columns, num_rows, board_position, score_board_height, colours):  # pylint: disable=unused-argument
         raise NotImplementedError
 
