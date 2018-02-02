@@ -8,7 +8,7 @@ from same.views.events import BallClickedEvent
 from same.views.events import GameQuit
 
 # These are the settings for pyinstaller
- # we are running in a bundle if sys.frozen else normal python
+# we are running in a bundle if sys.frozen else normal python
 BASE_DIR = sys._MEIPASS if getattr(sys, 'frozen', False) else '.'  # pylint: disable=E1101, protected-access
 
 
@@ -21,7 +21,7 @@ class SameGame:
     def play_game(self):
         changed = False
         self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
-        current_move_score = 0#self.board.get_score(position=self.gui_client.get_current_ball())
+        current_move_score = 0  # self.board.get_score(position=self.gui_client.get_current_ball())
         self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
         while True:
             # handle events
@@ -40,6 +40,7 @@ class SameGame:
             if self.board.is_game_over():
                 self.gui_client.game_over()
 
+
 def main(num_columns=16, num_rows=14, size=32):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
@@ -47,4 +48,5 @@ def main(num_columns=16, num_rows=14, size=32):
     sameGame = SameGame(board=aBoard, gui_client=aGuiClient)  # pylint: disable=invalid-name
     sameGame.play_game()
 
-main(num_columns=25, num_rows=20 , size=24)
+
+main(num_columns=25, num_rows=20, size=30)

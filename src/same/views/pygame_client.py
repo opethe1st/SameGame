@@ -54,11 +54,10 @@ class PyGameClient(GuiClient):
         pygame.display.update()
 
     def game_over(self):
-        print("no valid moves left, Game Over!")
         # TODO[ope]: add Game Over text to the screen.
-        
+        pass
+
     def end_game(self):
-        print("End the Game")
         pygame.quit()
         sys.exit(0)
 
