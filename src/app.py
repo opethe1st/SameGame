@@ -42,6 +42,7 @@ class SameGame:
                     self.board.update_high_score(new_high_score=self.board.get_current_score())
 
 
+
 def main(num_columns=16, num_rows=14, size=32):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = SameBoard(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
