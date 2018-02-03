@@ -15,3 +15,6 @@
  - Use a different gui framework say tkinter, wxPython, SDL
  - Detailed post describing how I built this game, the iterations - reasons behind decisions, architecture
  - Undo a move
+ - Save top 10 scores ever
+ - Top 10 scores page
+ - New Game button
