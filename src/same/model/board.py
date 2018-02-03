@@ -123,7 +123,7 @@ class SameBoard:
         return csr_balls
 
     def get_score(self, position: tuple):
-        return self.scorer.get_score(balls=self.adjacent(position=position))
+        return self.scorer.get_score(ball_positions=self.adjacent(position=position))
 
     def get_current_score(self):
         return self.scorer.get_current_score()

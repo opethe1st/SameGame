@@ -43,7 +43,7 @@ class SameGame:
 
 
 
-def main(num_columns=16: int, num_rows=14: int, size=32: int):
+def main(num_columns: int =16, num_rows: int =14, size: int =32):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = SameBoard(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
     aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name

@@ -1,3 +1,4 @@
+from typing import List
 import shelve
 
 
@@ -15,8 +16,8 @@ class Scorer:
         self.current_score += score
         return self.current_score
 
-    def get_score(self, balls):  # pylint: disable=unused-argument
-        return len(balls)**2 if len(balls) > 1 else 0
+    def get_score(self, ball_positions: List[tuple]):  # pylint: disable=unused-argument
+        return len(ball_positions)**2 if len(ball_positions) > 1 else 0
 
     def get_high_score(self):
         return self.high_score
@@ -24,4 +25,5 @@ class Scorer:
     def update_high_score(self, new_high_score: int):
         with shelve.open('high_score') as database:
             database['high_score'] = new_high_score
-        return database['high_score']
+            self.high_score = database['high_score']
+        return self.high_score
