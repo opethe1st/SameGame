@@ -5,7 +5,7 @@ from same.model.ball import Ball
 from same.model.box import Box
 
 
-class Board:
+class SameBoard:
 
     def __init__(self, num_columns, num_rows, num_colours, scorer):
         self.num_columns = num_columns
@@ -137,5 +137,5 @@ class Board:
     def get_high_score(self):
         return self.scorer.get_high_score()
 
-    def set_high_score(self):
-        return self.set_high_score()
+    def update_high_score(self, new_high_score):
+        return self.scorer.update_high_score(new_high_score=new_high_score)

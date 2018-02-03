@@ -1,6 +1,6 @@
 import sys
 
-from same.model import Board
+from same.model import SameBoard
 from same.model import Scorer
 from same.data.constants import ColourScheme
 from same.views.pygame_client import PyGameClient
@@ -38,11 +38,13 @@ class SameGame:
             self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score, moves=self.board.num_moves)
             if self.board.is_game_over():
                 self.gui_client.game_over(score=self.board.get_current_score(), high_score=self.board.get_high_score())
+                if self.board.get_current_score() > self.board.get_high_score():
+                    self.board.update_high_score(new_high_score=self.board.get_current_score())
 
 
 def main(num_columns=16, num_rows=14, size=32):
     aScorer = Scorer()  # pylint: disable=invalid-name
-    aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
+    aBoard = SameBoard(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
     aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
     sameGame = SameGame(board=aBoard, gui_client=aGuiClient)  # pylint: disable=invalid-name
     sameGame.play_game()
