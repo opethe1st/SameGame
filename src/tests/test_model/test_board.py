@@ -8,7 +8,7 @@ from same.model import Board
 from same.model import Scorer
 
 
-class TestBoard(TestCase):
+class BoardTestCase(TestCase):
 
     def setUp(self):
         self.num_colours = 5
@@ -18,7 +18,7 @@ class TestBoard(TestCase):
         self.board = Board(num_columns=self.num_columns, num_rows=self.num_rows, num_colours=self.num_colours, scorer=self.scorer)
 
 
-class TestGenerateRandomBalls(TestBoard):
+class TestGenerateRandomBalls(BoardTestCase):
 
     # make sure there are balls on every position on the board
     def test_balls_non_empty(self):
@@ -45,7 +45,7 @@ class TestGenerateRandomBalls(TestBoard):
         self.assertTrue(colours <= expected_colours)
 
 
-class TestGenerateBoxes(TestBoard):
+class TestGenerateBoxes(BoardTestCase):
 
     def test_size_box_arrays(self):
         boxes = self.board.generate_boxes()
@@ -82,7 +82,7 @@ class TestGenerateBoxes(TestBoard):
         self.assertListEqual(boxes, expected_boxes)
 
 
-class TestAdjacentBalls(TestBoard):
+class TestAdjacentBalls(BoardTestCase):
 
     def setUp(self):
         super().setUp()
@@ -115,7 +115,7 @@ class TestAdjacentBalls(TestBoard):
         self.assertEqual(adjacent_balls, expected_balls)
 
 
-class TestMakeMove(TestBoard):
+class TestMakeMove(BoardTestCase):
 
     def test_make_move(self):
         self.board.mark_balls_to_remove = Mock()
@@ -131,7 +131,7 @@ class TestMakeMove(TestBoard):
         self.board.convert_cols_to_rows.assert_called()
 
 
-class TestMarkBallsToRemove(TestBoard):
+class TestMarkBallsToRemove(BoardTestCase):
 
     def test_balls_set_to_none(self):
         self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
@@ -141,7 +141,7 @@ class TestMarkBallsToRemove(TestBoard):
         self.assertEqual(self.board.balls, [[None, None], [Ball(colour='blue'), Ball(colour='blue')]])
 
 
-class TestConvertRowsToColumn(TestBoard):
+class TestConvertRowsToColumn(BoardTestCase):
 
     def test_balls(self):
         self.board = Board(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
@@ -150,7 +150,7 @@ class TestConvertRowsToColumn(TestBoard):
         self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='red'), Ball(colour='blue')], [Ball(colour='green'), Ball(colour='green')]])
 
 
-class TestConvertColsToRows(TestBoard):
+class TestConvertColsToRows(BoardTestCase):
 
     def test_balls(self):
         self.board = Board(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
@@ -160,7 +160,7 @@ class TestConvertColsToRows(TestBoard):
         self.assertEqual(self.board.balls, expected_balls)
 
 
-class TestMakeBallsFall(TestBoard):
+class TestMakeBallsFall(BoardTestCase):
 
     def test_balls(self):
         self.board = Board(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
@@ -170,7 +170,7 @@ class TestMakeBallsFall(TestBoard):
         self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, None, Ball(colour='green')]])
 
 
-class TestRemoveEmptyRowsBetweenColumns(TestBoard):
+class TestRemoveEmptyRowsBetweenColumns(BoardTestCase):
 
     def test_balls(self):
         self.board = Board(num_columns=3, num_rows=3, num_colours=self.num_colours, scorer=self.scorer)
