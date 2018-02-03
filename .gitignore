@@ -8,3 +8,4 @@ tags
 .env
 .noseids
 .vscode/
+high_score.db
