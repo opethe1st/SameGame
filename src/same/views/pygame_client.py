@@ -8,11 +8,14 @@ from same.data.constants import Colour
 from same.views.gui_client import GuiClient
 from same.views.events import BallClickedEvent, GameQuit  # pylint: disable=W0611
 
+FONT_PATH = "/Users/ope/Documents/code/Projects/SameGame/src/static/Fonts/angrybirds-regular.ttf"
+GAME_OVER_SIZE = 50
+SCORE_FONT_SIZE = 22
 
 
 class PyGameClient(GuiClient):
 
-    def __init__(self, size, num_columns, num_rows, board_position, score_board_height, colours):
+    def __init__(self, size, num_columns, num_rows, score_board_height, colours):
         pygame.init()  # pylint: disable=all
         pygame.display.set_caption('Same!')
         self.score_board_height = score_board_height
@@ -44,18 +47,21 @@ class PyGameClient(GuiClient):
         pygame.gfxdraw.aacircle(self.screen, int(x * self.size), int(y * self.size), self.size//2 - 2, colour)
 
 
-    def draw_score_board(self, score, highest_score, current_move_score):
+    def draw_score_board(self, score, highest_score, current_move_score, moves):
         pygame.draw.rect(self.screen, Colour.GREY, (0, self.board_dimensions[1]-self.score_board_height, self.board_dimensions[0], self.score_board_height), 0)
         pygame.font.init()
-        myfont = pygame.font.Font("/Users/ope/Documents/code/Projects/SameGame/static/Fonts/angrybirds-regular.ttf", 22)
-        text = ' Score: {score} Moves: {moves} Current move: {current_move} Top Score: {top_score}'.format(score=score, moves=0, current_move=current_move_score, top_score=highest_score)
+        myfont = pygame.font.Font(FONT_PATH, SCORE_FONT_SIZE)
+        text = ' Score: {score} Moves: {moves} Current move: {current_move} Top Score: {top_score}'.format(score=score, moves=moves, current_move=current_move_score, top_score=highest_score)
         textsurface = myfont.render(text, 1, Colour.BLACK, Colour.GREY).convert()
         self.screen.blit(textsurface, (1, self.board_dimensions[1]-self.score_board_height + 1))
         pygame.display.update()
 
-    def game_over(self):
-        # TODO[ope]: add Game Over text to the screen.
-        pass
+    def game_over(self, score, high_score):
+        pygame.font.init()
+        myfont = pygame.font.Font(FONT_PATH, GAME_OVER_SIZE)
+        textsurface = myfont.render('GAME OVER !!', True, Colour.BLACK)
+        text_rect = textsurface.get_rect(center=(self.board_dimensions[0]/2, (self.board_dimensions[1]-self.score_board_height)/2))
+        self.screen.blit(textsurface,text_rect)
 
     def end_game(self):
         pygame.quit()

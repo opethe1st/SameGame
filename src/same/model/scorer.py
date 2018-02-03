@@ -13,7 +13,7 @@ class Scorer:
         return self.current_score
 
     def get_score(self, balls):  # pylint: disable=unused-argument
-        return len(balls)**2
+        return len(balls)**2 if len(balls) > 1 else 0
 
     def get_high_score(self):
         return 0

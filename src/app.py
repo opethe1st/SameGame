@@ -21,8 +21,7 @@ class SameGame:
     def play_game(self):
         changed = False
         self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
-        current_move_score = 0  # self.board.get_score(position=self.gui_client.get_current_ball())
-        self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
+        self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=0, moves=self.board.num_moves)
         while True:
             # handle events
             for event in self.gui_client.get_events():
@@ -36,17 +35,17 @@ class SameGame:
                 self.gui_client.draw_board(balls=self.board.get_balls(), boxes=self.board.get_boxes())
                 changed = False
             current_move_score = self.board.get_score(position=self.gui_client.get_current_ball())
-            self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score)
+            self.gui_client.draw_score_board(score=self.board.get_current_score(), highest_score=self.board.get_high_score(), current_move_score=current_move_score, moves=self.board.num_moves)
             if self.board.is_game_over():
-                self.gui_client.game_over()
+                self.gui_client.game_over(score=self.board.get_current_score(), high_score=self.board.get_high_score())
 
 
 def main(num_columns=16, num_rows=14, size=32):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = Board(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
-    aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, board_position=(10, 10), score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
+    aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name
     sameGame = SameGame(board=aBoard, gui_client=aGuiClient)  # pylint: disable=invalid-name
     sameGame.play_game()
 
 
-main(num_columns=25, num_rows=20, size=30)
+main()
