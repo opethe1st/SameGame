@@ -4,7 +4,11 @@ python:
 # command to install dependencies
 install:
   - pip install -r src/requirements.txt
-# command to run tests
-script:
-  - nosetests
-  - pylint --rcfile .pylintrc src/*.py
+
+# pre-flight checks!
+jobs:
+  include:
+    - stage: linting
+      script: pylint --rcfile .pylintrc src/*.py
+    - stage: unittests
+      script: nosetests
