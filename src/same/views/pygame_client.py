@@ -3,6 +3,7 @@ import sys
 import pygame
 import pygame.locals
 import pygame.gfxdraw
+from typing import List
 
 from same.data.constants import Colour
 from same.views.gui_client import GuiClient
@@ -15,7 +16,7 @@ SCORE_FONT_SIZE = 22
 
 class PyGameClient(GuiClient):
 
-    def __init__(self, size, num_columns, num_rows, score_board_height, colours):
+    def __init__(self, size: int, num_columns: int, num_rows: int, score_board_height: int, colours: 'ColourScheme'):
         pygame.init()  # pylint: disable=all
         pygame.display.set_caption('Same!')
         self.score_board_height = score_board_height
@@ -27,7 +28,7 @@ class PyGameClient(GuiClient):
         self.num_rows = num_rows
 
 
-    def draw_board(self, balls, boxes):
+    def draw_board(self, balls: List[List['Ball']], boxes: List[List['Box']]):
         pygame.draw.rect(self.screen, Colour.WHITE, (0, 0, self.num_columns * self.size, self.num_rows * self.size), 0)
         for j, row in enumerate(balls):
             for i, ball in enumerate(row):
@@ -40,14 +41,14 @@ class PyGameClient(GuiClient):
                     pygame.draw.rect(self.screen, self.colours[box.colour], (self.size//2*i+2, self.size//2*j+2, self.size-3, self.size-3), 0)
         pygame.display.update()
 
-    def draw_circle(self, position, colour):
+    def draw_circle(self, position: tuple, colour: 'Colour'):
         x, y = position
         x, y = x + 0.5, y + 0.5
         pygame.gfxdraw.filled_circle(self.screen, int(x * self.size), int(y * self.size), self.size//2 - 2, colour)
         pygame.gfxdraw.aacircle(self.screen, int(x * self.size), int(y * self.size), self.size//2 - 2, colour)
 
 
-    def draw_score_board(self, score, highest_score, current_move_score, moves):
+    def draw_score_board(self, score: int, highest_score: int, current_move_score: int, moves: int):
         pygame.draw.rect(self.screen, Colour.GREY, (0, self.board_dimensions[1]-self.score_board_height, self.board_dimensions[0], self.score_board_height), 0)
         pygame.font.init()
         myfont = pygame.font.Font(FONT_PATH, SCORE_FONT_SIZE)
@@ -56,7 +57,7 @@ class PyGameClient(GuiClient):
         self.screen.blit(textsurface, (1, self.board_dimensions[1]-self.score_board_height + 1))
         pygame.display.update()
 
-    def game_over(self, score, high_score):
+    def game_over(self, score: int, high_score: int):
         pygame.font.init()
         myfont = pygame.font.Font(FONT_PATH, GAME_OVER_SIZE)
         textsurface = myfont.render('GAME OVER !!', True, Colour.BLACK)

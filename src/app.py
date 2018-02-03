@@ -14,7 +14,7 @@ BASE_DIR = sys._MEIPASS if getattr(sys, 'frozen', False) else '.'  # pylint: dis
 
 class SameGame:
 
-    def __init__(self, board, gui_client):
+    def __init__(self, board: SameBoard, gui_client: PyGameClient):
         self.board = board
         self.gui_client = gui_client
 
@@ -43,7 +43,7 @@ class SameGame:
 
 
 
-def main(num_columns=16, num_rows=14, size=32):
+def main(num_columns=16: int, num_rows=14: int, size=32: int):
     aScorer = Scorer()  # pylint: disable=invalid-name
     aBoard = SameBoard(num_rows=num_rows, num_columns=num_columns, num_colours=4, scorer=aScorer)  # pylint: disable=invalid-name
     aGuiClient = PyGameClient(size=size, num_rows=num_rows, num_columns=num_columns, score_board_height=100, colours=ColourScheme.MONFAVORITE)  # pylint: disable=invalid-name

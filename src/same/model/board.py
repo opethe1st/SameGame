@@ -7,7 +7,7 @@ from same.model.box import Box
 
 class SameBoard:
 
-    def __init__(self, num_columns, num_rows, num_colours, scorer):
+    def __init__(self, num_columns: int, num_rows: int, num_colours: int, scorer: 'Scorer'):
         self.num_columns = num_columns
         self.num_rows = num_rows
         self.colours = [i for i in range(num_colours)]
@@ -122,20 +122,17 @@ class SameBoard:
             csr_balls[i] = [None] * self.num_rows
         return csr_balls
 
-    def get_score(self, position):
+    def get_score(self, position: tuple):
         return self.scorer.get_score(balls=self.adjacent(position=position))
 
     def get_current_score(self):
         return self.scorer.get_current_score()
 
-    def update_current_score(self, current_move_score):
+    def update_current_score(self, current_move_score: int):
         return self.scorer.update_current_score(score=current_move_score)
 
-    def set_current_score(self):
-        return self.scorer.set_current_score()
-
-    def get_high_score(self):
+    def get_high_score(self) -> int:
         return self.scorer.get_high_score()
 
-    def update_high_score(self, new_high_score):
+    def update_high_score(self, new_high_score: int) -> int:
         return self.scorer.update_high_score(new_high_score=new_high_score)
