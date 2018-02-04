@@ -49,57 +49,61 @@ class SameBoard:
         "Returns True if the Game is over and False otherwise"
         for x_pos in range(self.num_columns):
             for y_pos in range(self.num_rows):
-                if len(self.adjacent(position=(x_pos, y_pos))) > 1:
+                if len(self.adjacent(balls=self.balls, position=(x_pos, y_pos))) > 1:
                     return False
         return True
 
     def make_move(self, position: tuple):
-        positions_of_balls_to_remove = self.adjacent(position=position)
-        self.mark_balls_to_remove(positions_of_balls_to_remove=positions_of_balls_to_remove)
-        csr_balls = self.make_balls_fall()
+        positions_of_balls_to_remove = self.adjacent(balls=self.balls, position=position)
+        modified_balls = self.mark_balls_to_remove(balls=self.balls, positions_of_balls_to_remove=positions_of_balls_to_remove)
+        csr_balls = self.make_balls_fall(balls=modified_balls)
         csr_balls = self.remove_empty_rows(csr_balls=csr_balls)
-        self.convert_cols_to_rows(csr_balls=csr_balls)
-        self.update_current_score(current_move_score=self.calculate_score(ball_positions=positions_of_balls_to_remove))
+        self.update_current_score(current_move_score=self.calculate_score(ball_position=position))
         if len(positions_of_balls_to_remove) > 1:
             self.num_moves += 1
+        self.balls = self.transpose(balls=csr_balls)
 
-    def mark_balls_to_remove(self, positions_of_balls_to_remove: tuple):
+    @staticmethod
+    def mark_balls_to_remove(balls: List[List[Ball]], positions_of_balls_to_remove: List[tuple]):
+        balls = [[ball for ball in ball_row] for ball_row in balls]
         for pos in positions_of_balls_to_remove:
             x_pos, y_pos = pos
-            self.balls[x_pos][y_pos] = None
+            balls[x_pos][y_pos] = None
+        return balls
 
-    def adjacent(self, position: tuple) -> List[tuple]:
+    @staticmethod
+    def adjacent(balls: List[List[Ball]], position: tuple) -> List[tuple]:
         "returns the list of positions with balls of the same colour adjacent to the ball at position"
-        if position is None or self.balls[position[1]][position[0]] is None:
+        if position is None or balls[position[1]][position[0]] is None:
             return []
+        num_rows = len(balls)
+        num_columns = len(balls[0])
         y_pos, x_pos = position
-        colour = self.balls[x_pos][y_pos].colour
+        colour = balls[x_pos][y_pos].colour
         adjacent_balls = set()
         stack = [(x_pos, y_pos)]
         visited = set([x_pos, y_pos])
         while stack:
             x_pos, y_pos = stack.pop()
-            for (i, j) in [(max(0, x_pos - 1), y_pos), (min(self.num_rows - 1, x_pos + 1), y_pos), (x_pos, max(0, y_pos - 1)), (x_pos, min(self.num_columns - 1, y_pos + 1))]:
-                if self.balls[i][j] is not None and self.balls[i][j].colour == colour and (i, j) not in visited:
+            for (i, j) in [(max(0, x_pos - 1), y_pos), (min(num_rows - 1, x_pos + 1), y_pos), (x_pos, max(0, y_pos - 1)), (x_pos, min(num_columns - 1, y_pos + 1))]:
+                if balls[i][j] is not None and balls[i][j].colour == colour and (i, j) not in visited:
                     adjacent_balls.add((i, j))
                     stack.append((i, j))
                 visited.add((i, j))
         return adjacent_balls
 
-    def convert_rows_to_columns(self) -> List[List[Ball]]:
-        columns_to_rows = [[None for j in range(self.num_rows)] for i in range(self.num_columns)]
-        for j in range(self.num_rows):
-            for i in range(self.num_columns):
-                columns_to_rows[i][j] = self.balls[j][i]
+    @staticmethod
+    def transpose(balls: List[List[Ball]]) -> List[List[Ball]]:
+        num_rows = len(balls)
+        num_columns = len(balls[0])
+        columns_to_rows = [[None for j in range(num_rows)] for i in range(num_columns)]
+        for j in range(num_rows):
+            for i in range(num_columns):
+                columns_to_rows[i][j] = balls[j][i]
         return columns_to_rows
 
-    def convert_cols_to_rows(self, csr_balls: List[List[Ball]]):
-        for i in range(self.num_rows):
-            for j in range(self.num_columns):
-                self.balls[i][j] = csr_balls[j][i]
-
-    def make_balls_fall(self) -> List[List[Ball]]:
-        columns_to_rows = self.convert_rows_to_columns()
+    def make_balls_fall(self, balls: List[List[Ball]]) -> List[List[Ball]]:
+        columns_to_rows = self.transpose(balls=balls)
         csr_num_columns = len(columns_to_rows[0])
         for i, _ in enumerate(columns_to_rows):
             non_empty_columns = list(filter(lambda x: x is not None, columns_to_rows[i]))  # remove the Nones
@@ -107,7 +111,9 @@ class SameBoard:
             columns_to_rows[i] = empty_cols + non_empty_columns  # pad with Nones
         return columns_to_rows
 
-    def remove_empty_rows(self, csr_balls: List[List[Ball]]) -> List[List[Ball]]:
+    @staticmethod
+    def remove_empty_rows(csr_balls: List[List[Ball]]) -> List[List[Ball]]:
+        num_columns = len(csr_balls[0])
         columns_list = []
         for i, _ in enumerate(csr_balls):
             if any(csr_balls[i]):
@@ -115,10 +121,11 @@ class SameBoard:
         for i, column in enumerate(columns_list):
             csr_balls[i] = csr_balls[column]
         for i in range(len(columns_list), len(csr_balls)):
-            csr_balls[i] = [None] * self.num_rows
+            csr_balls[i] = [None] * num_columns
         return csr_balls
 
-    def calculate_score(self, ball_positions: tuple):
+    def calculate_score(self, ball_position: tuple):
+        ball_positions = self.adjacent(balls=self.get_balls(), position=ball_position)
         return self.scorer.calculate_score(ball_positions=ball_positions)
 
     def get_current_score(self):

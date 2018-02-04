@@ -144,7 +144,7 @@ class TestConvertRowsToColumn(BoardTestCase):
     def test_balls(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
         self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [Ball(colour='blue'), Ball(colour='blue'), Ball(colour='green')]]
-        csr_balls = self.board.convert_rows_to_columns()
+        csr_balls = self.board.transpose()
         self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='red'), Ball(colour='blue')], [Ball(colour='green'), Ball(colour='green')]])
 
 
@@ -162,8 +162,8 @@ class TestMakeBallsFall(BoardTestCase):
 
     def test_balls(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
-        self.board.convert_rows_to_columns = Mock()
-        self.board.convert_rows_to_columns.return_value = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, Ball(colour='green'), None]]
+        self.board.transpose = Mock()
+        self.board.transpose.return_value = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, Ball(colour='green'), None]]
         csr_balls = self.board.make_balls_fall()
         self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, None, Ball(colour='green')]])
 
