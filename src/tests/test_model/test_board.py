@@ -1,4 +1,4 @@
-from unittest.mock import create_autospec
+from unittest import mock
 from unittest.mock import Mock
 from unittest.case import TestCase
 
@@ -14,7 +14,7 @@ class BoardTestCase(TestCase):
         self.num_colours = 5
         self.num_rows = 5
         self.num_columns = 3
-        self.scorer = create_autospec(spec=Scorer, spec_set=True)
+        self.scorer = mock.create_autospec(spec=Scorer, spec_set=True)
         self.board = SameBoard(num_columns=self.num_columns, num_rows=self.num_rows, num_colours=self.num_colours, scorer=self.scorer)
 
 
@@ -89,28 +89,28 @@ class TestAdjacentBalls(BoardTestCase):
         self.board = SameBoard(num_columns=2, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
 
     def test_adjacent_balls(self):
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent(position=(0, 0))
+        balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
+        adjacent_balls = self.board.adjacent(balls=balls, position=(0, 0))
         expected_balls = set([(0, 0), (0, 1)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_adjacent_balls_all(self):
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red')]]
-        adjacent_balls = self.board.adjacent(position=(0, 0))
+        balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red')]]
+        adjacent_balls = self.board.adjacent(balls=balls, position=(0, 0))
         expected_balls = set([(0, 0), (0, 1), (1, 0), (1, 1)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_adjacent_balls_random(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='blue'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent(position=(0, 0))
+        balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='blue'), Ball(colour='blue')]]
+        adjacent_balls = self.board.adjacent(balls=balls, position=(0, 0))
         expected_balls = set([(0, 0), (0, 1), (0, 2), (1, 0)])
         self.assertEqual(adjacent_balls, expected_balls)
 
     def test_just_one_adjacent_ball(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red'), Ball(colour='blue')]]
-        adjacent_balls = self.board.adjacent(position=(2, 1))
+        balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='red')], [Ball(colour='red'), Ball(colour='red'), Ball(colour='blue')]]
+        adjacent_balls = self.board.adjacent(balls=balls, position=(2, 1))
         expected_balls = set([(1, 2)])
         self.assertEqual(adjacent_balls, expected_balls)
 
@@ -121,50 +121,42 @@ class TestMakeMove(BoardTestCase):
         self.board.mark_balls_to_remove = Mock()
         self.board.make_balls_fall = Mock()
         self.board.remove_empty_rows = Mock()
-        self.board.convert_cols_to_rows = Mock()
+        self.board.transpose = Mock()
 
         self.board.make_move(position=(0, 0))
 
         self.board.mark_balls_to_remove.assert_called()
         self.board.make_balls_fall.assert_called()
         self.board.remove_empty_rows.assert_called()
-        self.board.convert_cols_to_rows.assert_called()
+        self.board.transpose.assert_called()
 
 
 class TestMarkBallsToRemove(BoardTestCase):
 
     def test_balls_set_to_none(self):
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
-        self.board.mark_balls_to_remove(positions_of_balls_to_remove=[(0, 0), (0, 1)])
-        self.assertEqual(self.board.balls, [[None, None], [Ball(colour='blue'), Ball(colour='blue')]])
+        balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
+        modified_balls = self.board.mark_balls_to_remove(balls=balls, positions_of_balls_to_remove=[(0, 0), (0, 1)])
+        self.assertEqual(modified_balls, [[None, None], [Ball(colour='blue'), Ball(colour='blue')]])
 
 
-class TestConvertRowsToColumn(BoardTestCase):
-
-    def test_balls(self):
-        self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
-        self.board.balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [Ball(colour='blue'), Ball(colour='blue'), Ball(colour='green')]]
-        csr_balls = self.board.convert_rows_to_columns()
-        self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='red'), Ball(colour='blue')], [Ball(colour='green'), Ball(colour='green')]])
-
-
-class TestConvertColsToRows(BoardTestCase):
+class TestTranspose(BoardTestCase):
 
     def test_balls(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
         self.board.balls = [[None for i in range(3)] for j in range(2)]
-        self.board.convert_cols_to_rows(csr_balls=[[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='red'), Ball(colour='blue')], [Ball(colour='green'), Ball(colour='green')]])
+        transposed_balls = self.board.transpose(balls=[[Ball(colour='red'), Ball(colour='blue')], [Ball(colour='red'), Ball(colour='blue')], [Ball(colour='green'), Ball(colour='green')]])
         expected_balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [Ball(colour='blue'), Ball(colour='blue'), Ball(colour='green')]]
-        self.assertEqual(self.board.balls, expected_balls)
+        self.assertEqual(transposed_balls, expected_balls)
 
 
 class TestMakeBallsFall(BoardTestCase):
 
     def test_balls(self):
         self.board = SameBoard(num_columns=3, num_rows=2, num_colours=self.num_colours, scorer=self.scorer)
-        self.board.convert_rows_to_columns = Mock()
-        self.board.convert_rows_to_columns.return_value = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, Ball(colour='green'), None]]
-        csr_balls = self.board.make_balls_fall()
+        self.board.transpose = Mock()
+        balls = [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, Ball(colour='green'), None]]
+        self.board.transpose.return_value = balls
+        csr_balls = self.board.make_balls_fall(balls=balls)
         self.assertEqual(csr_balls, [[Ball(colour='red'), Ball(colour='red'), Ball(colour='green')], [None, None, Ball(colour='green')]])
 
 
