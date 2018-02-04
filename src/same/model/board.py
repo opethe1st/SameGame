@@ -64,8 +64,6 @@ class SameBoard:
             self.num_moves += 1
 
     def mark_balls_to_remove(self, positions_of_balls_to_remove: tuple):
-        if len(positions_of_balls_to_remove) == 1:
-            return
         for pos in positions_of_balls_to_remove:
             x_pos, y_pos = pos
             self.balls[x_pos][y_pos] = None
@@ -76,7 +74,7 @@ class SameBoard:
             return []
         y_pos, x_pos = position
         colour = self.balls[x_pos][y_pos].colour
-        adjacent_balls = set([(x_pos, y_pos)])
+        adjacent_balls = set()
         stack = [(x_pos, y_pos)]
         visited = set([x_pos, y_pos])
         while stack:
