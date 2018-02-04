@@ -123,7 +123,6 @@ class SameBoard:
     def calculate_score(self, ball_positions: tuple):
         return self.scorer.calculate_score(ball_positions=ball_positions)
 
-
     def get_current_score(self):
         return self.scorer.get_current_score()
 
