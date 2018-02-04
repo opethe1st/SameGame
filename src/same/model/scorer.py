@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 from typing import List
-=======
->>>>>>> refactoring
 import shelve
 
 
