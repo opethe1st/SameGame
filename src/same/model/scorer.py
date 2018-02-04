@@ -16,7 +16,7 @@ class Scorer:
         self.current_score += score
         return self.current_score
 
-    def get_score(self, ball_positions: List[tuple]):  # pylint: disable=unused-argument
+    def calculate_score(self, ball_positions: List[tuple]):  # pylint: disable=unused-argument
         return len(ball_positions)**2 if len(ball_positions) > 1 else 0
 
     def get_high_score(self):
