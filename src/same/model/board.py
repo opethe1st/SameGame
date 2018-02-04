@@ -54,18 +54,16 @@ class SameBoard:
         return True
 
     def make_move(self, position: tuple):
-        self.mark_balls_to_remove(position=position)
+        positions_of_balls_to_remove = self.adjacent(position=position)
+        self.mark_balls_to_remove(positions_of_balls_to_remove=positions_of_balls_to_remove)
         csr_balls = self.make_balls_fall()
         csr_balls = self.remove_empty_rows(csr_balls=csr_balls)
         self.convert_cols_to_rows(csr_balls=csr_balls)
-        if len(self.adjacent(position=position)) > 1:
-            self.update_current_score(current_move_score=self.get_score(position=position))
+        self.update_current_score(current_move_score=self.calculate_score(ball_positions=positions_of_balls_to_remove))
+        if len(positions_of_balls_to_remove) > 1:
             self.num_moves += 1
 
-    def mark_balls_to_remove(self, position: tuple):
-        if position is None or self.balls[position[1]][position[0]] is None:
-            return
-        positions_of_balls_to_remove = self.adjacent(position=position)
+    def mark_balls_to_remove(self, positions_of_balls_to_remove: tuple):
         if len(positions_of_balls_to_remove) == 1:
             return
         for pos in positions_of_balls_to_remove:
@@ -122,8 +120,8 @@ class SameBoard:
             csr_balls[i] = [None] * self.num_rows
         return csr_balls
 
-    def get_score(self, position: tuple):
-        return self.scorer.get_score(ball_positions=self.adjacent(position=position))
+    def calculate_score(self, ball_positions: tuple):
+        return self.scorer.calculate_score(ball_positions=ball_positions)
 
     def get_current_score(self):
         return self.scorer.get_current_score()

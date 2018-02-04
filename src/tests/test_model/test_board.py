@@ -135,9 +135,7 @@ class TestMarkBallsToRemove(BoardTestCase):
 
     def test_balls_set_to_none(self):
         self.board.balls = [[Ball(colour='red'), Ball(colour='red')], [Ball(colour='blue'), Ball(colour='blue')]]
-        self.board.adjacent = Mock()
-        self.board.adjacent.return_value = set([(0, 0), (0, 1)])
-        self.board.mark_balls_to_remove(position=(0, 0))
+        self.board.mark_balls_to_remove(positions_of_balls_to_remove=[(0, 0), (0, 1)])
         self.assertEqual(self.board.balls, [[None, None], [Ball(colour='blue'), Ball(colour='blue')]])
 
 

@@ -9,9 +9,9 @@ from same.data.constants import Colour
 from same.views.gui_client import GuiClient
 from same.views.events import BallClickedEvent, GameQuit  # pylint: disable=W0611
 
-FONT_PATH = "/Users/ope/Documents/code/Projects/SameGame/src/static/Fonts/angrybirds-regular.ttf"
+FONT_PATH = "static/Fonts/angrybirds-regular.ttf"
 GAME_OVER_SIZE = 50
-SCORE_FONT_SIZE = 22
+SCORE_FONT_SIZE = 20
 
 
 class PyGameClient(GuiClient):
@@ -52,7 +52,7 @@ class PyGameClient(GuiClient):
         pygame.draw.rect(self.screen, Colour.GREY, (0, self.board_dimensions[1]-self.score_board_height, self.board_dimensions[0], self.score_board_height), 0)
         pygame.font.init()
         myfont = pygame.font.Font(FONT_PATH, SCORE_FONT_SIZE)
-        text = ' Score: {score} Moves: {moves} Current move: {current_move} Top Score: {top_score}'.format(score=score, moves=moves, current_move=current_move_score, top_score=highest_score)
+        text = ' Score: {score:5} Moves: {moves:3} Current move: {current_move:5} Top Score: {top_score:6}'.format(score=score, moves=moves, current_move=current_move_score, top_score=highest_score)
         textsurface = myfont.render(text, 1, Colour.BLACK, Colour.GREY).convert()
         self.screen.blit(textsurface, (1, self.board_dimensions[1]-self.score_board_height + 1))
         pygame.display.update()
